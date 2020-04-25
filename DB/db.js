@@ -1,6 +1,7 @@
 import { Database } from 'arangojs';
 import createCollections from './createCollections';
 import bcrypt from 'bcryptjs';
+import keys from '../config/keys';
 
 const dbConfig =
   process.env.ENV === 'dev'
