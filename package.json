@@ -6,6 +6,7 @@
   "scripts": {
     "debug": "DEBUG='app:*' babel-node .",
     "start:dev": "ENV=dev babel-node .",
+    "start:prod": "ENV=prod babel-node .",
     "build": "webpack -p --define process.env.ENV='\"prod\"' --config ./webpack.config.js --mode production",
     "serve": "node bundle.js"
   },
