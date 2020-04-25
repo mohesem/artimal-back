@@ -57,6 +57,8 @@ bcrypt.hash('admin' + keys.passwordKey, keys.passwordSalt, async (err, hash) => 
     password: hash,
     role: 'admin',
   });
+
+  console.log('.............', saveUser);
 });
 export {
   db,
