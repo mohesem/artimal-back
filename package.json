@@ -8,7 +8,8 @@
     "start:dev": "ENV=dev babel-node .",
     "start:prod": "ENV=prod babel-node .",
     "build": "webpack -p --define process.env.ENV='\"prod\"' --config ./webpack.config.js --mode production",
-    "serve": "node bundle.js"
+    "serve": "node bundle.js",
+    "git:push": "git add . && git commit -m 'last commit' && git push -u origin master"
   },
   "keywords": [],
   "author": "",

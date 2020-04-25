@@ -4,14 +4,14 @@ import createCollections from './createCollections';
 const dbConfig =
   process.env.ENV === 'dev'
     ? {
-        host: 'localhost',
+        host: '127.0.0.1',
         port: '8529',
         username: 'artiman',
         password: 'artiman',
         database: 'artiman',
       }
     : {
-        host: 'localhost',
+        host: '127.0.0.1',
         port: '8529',
         username: 'artimal',
         password: '9KXgTVYmVTBuUuEvURUBBbnfhzwTp4Yc',
