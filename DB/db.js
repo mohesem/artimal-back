@@ -1,5 +1,6 @@
 import { Database } from 'arangojs';
 import createCollections from './createCollections';
+import bcrypt from 'bcryptjs';
 
 const dbConfig =
   process.env.ENV === 'dev'
@@ -49,6 +50,14 @@ const fromAnimalToVaccine = db.edgeCollection('fromAnimalToVaccine');
 /*                                    views                                   */
 /* -------------------------------------------------------------------------- */
 
+bcrypt.hash('admin' + keys.passwordKey, keys.passwordSalt, async (err, hash) => {
+  if (err) reject({ msg: 'internal server error' });
+  const saveUser = await userCollection.save({
+    username: 'admin',
+    password: hash,
+    role: 'admin',
+  });
+});
 export {
   db,
   // collection

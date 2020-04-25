@@ -6,6 +6,7 @@ bcrypt.hash('admin' + keys.passwordKey, keys.passwordSalt, async (err, hash) => 
   const saveUser = await userCollection.save({
     username: 'admin',
     password: hash,
+    role: 'admin',
   });
 });
 
