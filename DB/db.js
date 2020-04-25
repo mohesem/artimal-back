@@ -25,6 +25,8 @@ db.useBasicAuth(dbConfig.username, dbConfig.password);
 db.useDatabase(dbConfig.database);
 createCollections(db);
 
+console.log(db);
+
 /* -------------------------------------------------------------------------- */
 /*                                 collections                                */
 /* -------------------------------------------------------------------------- */
