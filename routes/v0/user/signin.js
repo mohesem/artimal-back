@@ -1,7 +1,7 @@
 import { db } from '../../../DB/db';
 import keys from '../../../config/keys';
 import { wrongPassword, wrongUsername, serverError } from '../../errors';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 async function findUser(username) {
