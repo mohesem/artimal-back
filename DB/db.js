@@ -11,7 +11,7 @@ const dbConfig =
         database: 'artiman',
       }
     : {
-        host: '194.5.175.201',
+        host: 'localhost',
         port: '8529',
         username: 'artimal',
         password: '9KXgTVYmVTBuUuEvURUBBbnfhzwTp4Yc',
