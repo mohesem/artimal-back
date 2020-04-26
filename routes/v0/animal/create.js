@@ -242,7 +242,7 @@ export default data => {
 
       resolve({ status: 200, msg: 'دام با موفقیت ایجاد شد' });
     } catch (error) {
-      console.log(error);
+      // console.log(error);
       if (error.status) reject(error);
       else reject({ status: 500, error: serverError });
     }
