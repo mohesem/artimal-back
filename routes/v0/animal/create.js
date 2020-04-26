@@ -122,6 +122,8 @@ export default data => {
 
       console.log(animalObject);
 
+      console.log('starting db transaction');
+
       const trx = await db.beginTransaction({
         write: [
           'logs',
@@ -133,6 +135,8 @@ export default data => {
           'fromAnimalToExpenses',
         ],
       });
+
+      console.log('transaction is already started');
 
       // await trx.run(() =>
       //   logCollection.save({
@@ -146,6 +150,7 @@ export default data => {
 
       const animal = await trx.run(() => animalCollection.save(animalObject));
 
+      console.log('animal is : ', animal);
       const weight = await trx.run(() =>
         weightCollection.save({
           userkey: decoded.key,
