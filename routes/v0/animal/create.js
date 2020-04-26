@@ -151,6 +151,7 @@ export default data => {
       const animal = await trx.run(() => animalCollection.save(animalObject));
 
       console.log('animal is : ', animal);
+
       const weight = await trx.run(() =>
         weightCollection.save({
           userkey: decoded.key,
