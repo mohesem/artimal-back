@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import create from './create';
-import read from './read';
-import remove from './remove';
-import update from './update';
+import death from './death';
+import sell from './sell';
+import slaughter from './slaughter';
+import get from './get';
 
 const router = Router();
 
@@ -10,29 +10,26 @@ const router = Router();
 /*                                     new                                    */
 /* -------------------------------------------------------------------------- */
 router.get('/:animalKey', (req, res) => {
-  // console.log('...............................');
-  read(req.params.animalKey)
+  get(req.params.animalKey)
     .then(response => res.status(response.status).send({ result: response.result }))
     .catch(response => res.status(response.status).send({ error: response.error }));
 });
 
-router.post('/new', (req, res) => {
-  create(req.body)
+router.post('/sell', (req, res) => {
+  sell(req.body)
     .then(response => res.status(response.status).send({ result: response.result }))
     .catch(response => res.status(response.status).send({ error: response.error }));
 });
 
-router.delete('/:token/:key', (req, res) => {
-  console.log('reeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeemove');
-  remove(req.params.token, req.params.key)
-    .then(response => res.status(response.status).send({ result: response.result }))
+router.post('/slaughter', (req, res) => {
+  slaughter(req.body)
+    .then(response => res.status(response.status).send({ msg: response.msg }))
     .catch(response => res.status(response.status).send({ error: response.error }));
 });
 
-router.put('/', (req, res) => {
-  update(req.body)
+router.post('/death', (req, res) => {
+  death(req.body)
     .then(response => res.status(response.status).send({ result: response.result }))
     .catch(response => res.status(response.status).send({ error: response.error }));
 });
-
 export default router;

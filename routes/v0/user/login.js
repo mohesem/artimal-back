@@ -50,6 +50,7 @@ export default body => {
       const token = await createNewToken(user);
       resolve({ status: 200, token });
     } catch (error) {
+      console.log('login error ::: ', error);
       if (error.status) reject(error);
       else reject({ status: 500, error: serverError });
     }
@@ -57,33 +58,3 @@ export default body => {
 };
 
 // TODO: check error messages for appropriate messages
-
-//   db.query(
-//     `FOR user IN users
-//   FILTER user.username == "${usernamew}"
-//   RETURN user`
-//   )
-//     .then(docs => {
-//       const result = docs._result;
-//       if (!result.length) {
-//         reject({ status: 401, error: wrongUsername });
-//       } else {
-//         console.log('.....result', result);
-//         const user = result[0];
-//         bcrypt.compare(password + keys.passwordKey, user.password, (err, isEqual) => {
-//           if (err) console.log(err);
-//           console.log(isEqual);
-//           if (!isEqual) {
-//             reject({ status: 401, error: wrongPassword });
-//           }
-//           //
-//           jwt.sign({ key: user._key, username: user.username }, keys.jwtKey, (err, token) => {
-//             if (err) reject({ status: 500, error: serverError });
-//             else resolve(token);
-//           });
-//         });
-//       }
-//     })
-//     .catch(function(error) {
-//       reject(error.response.body);
-//     });

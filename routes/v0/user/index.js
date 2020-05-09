@@ -1,11 +1,11 @@
 import { Router } from 'express';
-import signin from './signin';
-import verify from './verify';
+import login from './login';
+import getByToken from './getByToken';
 
 const router = Router();
 
-router.post('/signin', (req, res) => {
-  signin(req.body)
+router.post('/login', (req, res) => {
+  login(req.body)
     .then(response => res.status(response.status).send({ token: response.token }))
     .catch(response => res.status(response.status).send({ error: response.error }));
 });
@@ -13,9 +13,9 @@ router.post('/signin', (req, res) => {
 /* -------------------------------------------------------------------------- */
 /*                                    READ                                    */
 /* -------------------------------------------------------------------------- */
-router.post('/verify', (req, res) => {
-  verify(req.body)
-    .then(response => res.status(response.status).send({ msg: response.msg }))
+router.get('/token/:token', (req, res) => {
+  getByToken(req.params.token)
+    .then(response => res.status(response.status).send({ result: response.result }))
     .catch(response => res.status(response.status).send({ error: response.error }));
 });
 

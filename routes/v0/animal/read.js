@@ -13,34 +13,38 @@ async function search(query) {
         console.log(docs._result);
         resolve(formatResult);
       } else {
-        resolve({ results: [] });
+        resolve({ result: [] });
       }
     });
   });
 }
 
-const createQuery = (key, sex, type, limit) => {
+const createQuery = (key, sex, type, limit, race) => {
+  // TODO: add it later ==>  FILTER animal.exit != true
+
   return new Promise((resolve, reject) => {
     const q = `FOR animal IN animalView
     SEARCH STARTS_WITH(animal._key, "${key}")
     ${sex !== undefined ? `FILTER animal.sex == ${sex}` : ''}
+    ${race ? `FILTER animal.race == "${race}"` : ''}
     ${type ? `FILTER animal.type == "${type}"` : ''}
+
     ${limit ? `LIMIT ${limit}` : ''}
     RETURN animal`;
+    console.log(q);
     resolve(q);
     reject();
   });
 };
 
-export default body => {
-  const { key, sex, type, limit } = body;
+export default (limit, key, sex, type, race) => {
   return new Promise(async (resolve, reject) => {
-    const query = await createQuery(key, sex, type, limit);
-    console.log('........', query);
+    const query = await createQuery(key, sex, type, limit, race);
+    // console.log('........', query);
     try {
-      const results = await search(query);
-      console.log('..........', results);
-      resolve({ status: 200, results });
+      const result = await search(query);
+      console.log('..........', result);
+      resolve({ status: 200, result });
     } catch (err) {
       console.log(err);
       reject({ status: 500, msg: 'خطای سرور' });

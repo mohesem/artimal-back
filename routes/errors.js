@@ -11,6 +11,8 @@ const sexMismatch = 'عدم انطباق در جنسیت';
 const animalNotFound = 'دامی با این پلاک یافت نشد';
 const successAction = 'عملیات با موفقیت انجام شد';
 const noResult = 'اطلاعات مورد نظر یافت نشد';
+const notAllowed = 'شما اجازه ی انجام این عملیاتن را ندارید';
+const animalIsOut = 'امکان انجام این عملایات برایس دامی که از سیستم خارج شده است وجود ندارد';
 
 export {
   serverError,
@@ -26,4 +28,6 @@ export {
   animalNotFound,
   successAction,
   noResult,
+  notAllowed,
+  animalIsOut,
 };

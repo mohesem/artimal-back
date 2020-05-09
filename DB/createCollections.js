@@ -55,23 +55,6 @@ async function createLogsCollection(db) {
   }
 }
 
-// async function createRecordsCollection(db) {
-//   const recordsCollection = await db.collection('records');
-//   const result = await recordsCollection.exists();
-//   if (!result) {
-//     recordsCollection.create().then(
-//       () => {
-//         log('records collection created');
-//       },
-//       err => {
-//         throw new Error({ msg: 'Failed to create collection', err });
-//       }
-//     );
-//   } else {
-//     log('records collection already exists');
-//   }
-// }
-
 async function createWeightsCollection(db) {
   const weightsCollection = await db.collection('weights');
   const result = await weightsCollection.exists();
@@ -106,25 +89,25 @@ async function createExpensesCollection(db) {
   }
 }
 
-async function createVaccineCollection(db) {
-  const vaccineCollection = await db.collection('vaccine');
-  const result = await vaccineCollection.exists();
+async function createVaccinesCollection(db) {
+  const vaccinesCollection = await db.collection('vaccines');
+  const result = await vaccinesCollection.exists();
   if (!result) {
-    vaccineCollection.create().then(
+    vaccinesCollection.create().then(
       () => {
-        log('vaccine collection created');
+        log('vaccines collection created');
       },
       err => {
         throw new Error({ msg: 'Failed to create collection', err });
       }
     );
   } else {
-    log('vaccine collection already exists');
+    log('vaccines collection already exists');
   }
 }
 
-async function createDiseaseCollection(db) {
-  const diseaseCollection = await db.collection('disease');
+async function createDiseasesCollection(db) {
+  const diseaseCollection = await db.collection('diseases');
   const result = await diseaseCollection.exists();
   if (!result) {
     diseaseCollection.create().then(
@@ -140,6 +123,107 @@ async function createDiseaseCollection(db) {
   }
 }
 
+async function createIncomesCollection(db) {
+  const incomeCollection = await db.collection('incomes');
+  const result = await incomeCollection.exists();
+  if (!result) {
+    incomeCollection.create().then(
+      () => {
+        log('income collection created');
+      },
+      err => {
+        throw new Error({ msg: 'Failed to create collection', err });
+      }
+    );
+  } else {
+    log('income collection already exists');
+  }
+}
+
+async function createExitsCollection(db) {
+  const exitsCollection = await db.collection('exits');
+  const result = await exitsCollection.exists();
+  if (!result) {
+    exitsCollection.create().then(
+      () => {
+        log('exits collection created');
+      },
+      err => {
+        throw new Error({ msg: 'Failed to create collection', err });
+      }
+    );
+  } else {
+    log('exits collection already exists');
+  }
+}
+
+async function createMilksCollection(db) {
+  const milksCollection = await db.collection('milks');
+  const result = await milksCollection.exists();
+  if (!result) {
+    milksCollection.create().then(
+      () => {
+        log('milks collection created');
+      },
+      err => {
+        throw new Error({ msg: 'Failed to create collection', err });
+      }
+    );
+  } else {
+    log('milks collection already exists');
+  }
+}
+
+async function createPregnanciesCollection(db) {
+  const pregnanciesCollection = await db.collection('pregnancies');
+  const result = await pregnanciesCollection.exists();
+  if (!result) {
+    pregnanciesCollection.create().then(
+      () => {
+        log('pregnancies collection created');
+      },
+      err => {
+        throw new Error({ msg: 'Failed to create collection', err });
+      }
+    );
+  } else {
+    log('pregnancies collection already exists');
+  }
+}
+
+async function createDiseaseStepsCollection(db) {
+  const diseaseStepsCollection = await db.collection('diseaseSteps');
+  const result = await diseaseStepsCollection.exists();
+  if (!result) {
+    diseaseStepsCollection.create().then(
+      () => {
+        log('diseaseSteps collection created');
+      },
+      err => {
+        throw new Error({ msg: 'Failed to create collection', err });
+      }
+    );
+  } else {
+    log('diseaseSteps collection already exists');
+  }
+}
+
+async function createErrorsCollection(db) {
+  const errorsCollection = await db.collection('errors');
+  const result = await errorsCollection.exists();
+  if (!result) {
+    errorsCollection.create().then(
+      () => {
+        log('errors collection created');
+      },
+      err => {
+        throw new Error({ msg: 'Failed to create collection', err });
+      }
+    );
+  } else {
+    log('errors collection already exists');
+  }
+}
 /* -------------------------------------------------------------------------- */
 /*                                    edges                                   */
 /* -------------------------------------------------------------------------- */
@@ -161,12 +245,12 @@ async function createDiseaseCollection(db) {
 //   }
 // }
 
-async function createFromAnimalToAnimalEdge(db) {
-  const animalAnimalEdge = await db.edgeCollection('fromAnimalToAnimal');
-  const result = await animalAnimalEdge.exists();
+async function createAnimalEdges(db) {
+  const animalEdges = await db.edgeCollection('animalEdges');
+  const result = await animalEdges.exists();
   console.log('.......', result);
   if (!result) {
-    animalAnimalEdge.create().then(
+    animalEdges.create().then(
       () => {
         log('animalAnimal edgeCollection created');
       },
@@ -179,90 +263,406 @@ async function createFromAnimalToAnimalEdge(db) {
   }
 }
 
-async function createFromAnimalToWeightsEdge(db) {
-  const animalWeightsEdge = await db.edgeCollection('fromAnimalToWeight');
-  const result = await animalWeightsEdge.exists();
+async function createUserEdges(db) {
+  const userEdges = await db.edgeCollection('userEdges');
+  const result = await userEdges.exists();
+  console.log('.......', result);
   if (!result) {
-    animalWeightsEdge.create().then(
+    userEdges.create().then(
       () => {
-        log('animalWeights edgeCollection created');
+        log('user edgeCollection created');
       },
       err => {
         throw new Error({ msg: 'Failed to create edgeCollection', err });
       }
     );
   } else {
-    log('animalWeights edgeCollection already exists');
+    log('user edgeCollection already exists');
   }
 }
 
-async function createFromAnimalToExpensesEdge(db) {
-  const animalExpensesEdge = await db.edgeCollection('fromAnimalToExpenses');
-  const result = await animalExpensesEdge.exists();
+async function createExitEdges(db) {
+  const exitEdges = await db.edgeCollection('exitEdges');
+  const result = await exitEdges.exists();
+  console.log('.......', result);
   if (!result) {
-    animalExpensesEdge.create().then(
+    exitEdges.create().then(
       () => {
-        log('animalExpenses edgeCollection created');
+        log('exit edgeCollection created');
       },
       err => {
         throw new Error({ msg: 'Failed to create edgeCollection', err });
       }
     );
   } else {
-    log('animalExpenses edgeCollection already exists');
+    log('exit edgeCollection already exists');
   }
 }
 
-async function createFromVaccineToExpensesEdge(db) {
-  const vaccineExpensesEdge = await db.edgeCollection('fromVaccineToExpenses');
-  const result = await vaccineExpensesEdge.exists();
+async function createWeightEdges(db) {
+  const weightEdges = await db.edgeCollection('weightEdges');
+  const result = await weightEdges.exists();
+  console.log('.......', result);
   if (!result) {
-    vaccineExpensesEdge.create().then(
+    weightEdges.create().then(
       () => {
-        log('vaccineExpenses edgeCollection created');
+        log('weight edgeCollection created');
       },
       err => {
         throw new Error({ msg: 'Failed to create edgeCollection', err });
       }
     );
   } else {
-    log('vaccineExpenses edgeCollection already exists');
+    log('weight edgeCollection already exists');
   }
 }
 
-async function createFromAnimalToVaccineEdge(db) {
-  const animalVaccineEdge = await db.edgeCollection('fromAnimalToVaccine');
-  const result = await animalVaccineEdge.exists();
+async function createIncomeEdges(db) {
+  const incomeEdges = await db.edgeCollection('incomeEdges');
+  const result = await incomeEdges.exists();
+  console.log('.......', result);
   if (!result) {
-    animalVaccineEdge.create().then(
+    incomeEdges.create().then(
       () => {
-        log('animalVaccine edgeCollection created');
+        log('income edgeCollection created');
       },
       err => {
         throw new Error({ msg: 'Failed to create edgeCollection', err });
       }
     );
   } else {
-    log('animalVaccine edgeCollection already exists');
+    log('income edgeCollection already exists');
   }
 }
 
-async function createFromAnimalToDiseaseEdge(db) {
-  const animalDiseaseEdge = await db.edgeCollection('fromAnimalToDisease');
-  const result = await animalDiseaseEdge.exists();
+async function createExpenseEdges(db) {
+  const expenseEdges = await db.edgeCollection('expenseEdges');
+  const result = await expenseEdges.exists();
+  console.log('.......', result);
   if (!result) {
-    animalDiseaseEdge.create().then(
+    expenseEdges.create().then(
       () => {
-        log('animalDisease edgeCollection created');
+        log('expense edgeCollection created');
       },
       err => {
         throw new Error({ msg: 'Failed to create edgeCollection', err });
       }
     );
   } else {
-    log('animalDisease edgeCollection already exists');
+    log('expense edgeCollection already exists');
   }
 }
+
+async function createMilkEdges(db) {
+  const milkEdges = await db.edgeCollection('milkEdges');
+  const result = await milkEdges.exists();
+  console.log('.......', result);
+  if (!result) {
+    milkEdges.create().then(
+      () => {
+        log('milk edgeCollection created');
+      },
+      err => {
+        throw new Error({ msg: 'Failed to create edgeCollection', err });
+      }
+    );
+  } else {
+    log('milk edgeCollection already exists');
+  }
+}
+
+async function createDiseaseEdges(db) {
+  const diseaseEdges = await db.edgeCollection('diseaseEdges');
+  const result = await diseaseEdges.exists();
+  console.log('.......', result);
+  if (!result) {
+    diseaseEdges.create().then(
+      () => {
+        log('disease edgeCollection created');
+      },
+      err => {
+        throw new Error({ msg: 'Failed to create edgeCollection', err });
+      }
+    );
+  } else {
+    log('disease edgeCollection already exists');
+  }
+}
+
+async function createPregnancyEdges(db) {
+  const pregnancyEdges = await db.edgeCollection('pregnancyEdges');
+  const result = await pregnancyEdges.exists();
+  console.log('.......', result);
+  if (!result) {
+    pregnancyEdges.create().then(
+      () => {
+        log('pregnancy edgeCollection created');
+      },
+      err => {
+        throw new Error({ msg: 'Failed to create edgeCollection', err });
+      }
+    );
+  } else {
+    log('pregnancy edgeCollection already exists');
+  }
+}
+
+async function createVaccineEdges(db) {
+  const vaccineEdges = await db.edgeCollection('vaccineEdges');
+  const result = await vaccineEdges.exists();
+  console.log('.......', result);
+  if (!result) {
+    vaccineEdges.create().then(
+      () => {
+        log('vaccine edgeCollection created');
+      },
+      err => {
+        throw new Error({ msg: 'Failed to create edgeCollection', err });
+      }
+    );
+  } else {
+    log('vaccine edgeCollection already exists');
+  }
+}
+
+async function createLogEdges(db) {
+  const logEdge = await db.edgeCollection('logEdge');
+  const result = await logEdge.exists();
+  console.log('.......', result);
+  if (!result) {
+    logEdge.create().then(
+      () => {
+        log('vaccine edgeCollection created');
+      },
+      err => {
+        throw new Error({ msg: 'Failed to create edgeCollection', err });
+      }
+    );
+  } else {
+    log('vaccine edgeCollection already exists');
+  }
+}
+
+// async function createFromAnimalToWeightsEdge(db) {
+//   const animalWeightsEdge = await db.edgeCollection('fromAnimalToWeight');
+//   const result = await animalWeightsEdge.exists();
+//   if (!result) {
+//     animalWeightsEdge.create().then(
+//       () => {
+//         log('animalWeights edgeCollection created');
+//       },
+//       err => {
+//         throw new Error({ msg: 'Failed to create edgeCollection', err });
+//       }
+//     );
+//   } else {
+//     log('animalWeights edgeCollection already exists');
+//   }
+// }
+
+// async function createFromAnimalToExpensesEdge(db) {
+//   const animalExpensesEdge = await db.edgeCollection('fromAnimalToExpenses');
+//   const result = await animalExpensesEdge.exists();
+//   if (!result) {
+//     animalExpensesEdge.create().then(
+//       () => {
+//         log('animalExpenses edgeCollection created');
+//       },
+//       err => {
+//         throw new Error({ msg: 'Failed to create edgeCollection', err });
+//       }
+//     );
+//   } else {
+//     log('animalExpenses edgeCollection already exists');
+//   }
+// }
+
+// // async function createFromVaccineToExpensesEdge(db) {
+// //   const vaccineExpensesEdge = await db.edgeCollection('fromVaccineToExpenses');
+// //   const result = await vaccineExpensesEdge.exists();
+// //   if (!result) {
+// //     vaccineExpensesEdge.create().then(
+// //       () => {
+// //         log('vaccineExpenses edgeCollection created');
+// //       },
+// //       err => {
+// //         throw new Error({ msg: 'Failed to create edgeCollection', err });
+// //       }
+// //     );
+// //   } else {
+// //     log('vaccineExpenses edgeCollection already exists');
+// //   }
+// // }
+
+// async function createFromAnimalToVaccineEdge(db) {
+//   const animalVaccineEdge = await db.edgeCollection('fromAnimalToVaccine');
+//   const result = await animalVaccineEdge.exists();
+//   if (!result) {
+//     animalVaccineEdge.create().then(
+//       () => {
+//         log('animalVaccine edgeCollection created');
+//       },
+//       err => {
+//         throw new Error({ msg: 'Failed to create edgeCollection', err });
+//       }
+//     );
+//   } else {
+//     log('animalVaccine edgeCollection already exists');
+//   }
+// }
+
+// async function createFromAnimalToDiseaseEdge(db) {
+//   const animalDiseaseEdge = await db.edgeCollection('fromAnimalToDisease');
+//   const result = await animalDiseaseEdge.exists();
+//   if (!result) {
+//     animalDiseaseEdge.create().then(
+//       () => {
+//         log('animalDisease edgeCollection created');
+//       },
+//       err => {
+//         throw new Error({ msg: 'Failed to create edgeCollection', err });
+//       }
+//     );
+//   } else {
+//     log('animalDisease edgeCollection already exists');
+//   }
+// }
+
+// async function createFromAnimalToIncomeEdge(db) {
+//   const animalIncomeEdge = await db.edgeCollection('fromAnimalToIncome');
+//   const result = await animalIncomeEdge.exists();
+//   if (!result) {
+//     animalIncomeEdge.create().then(
+//       () => {
+//         log('animalIncome edgeCollection created');
+//       },
+//       err => {
+//         throw new Error({ msg: 'Failed to create edgeCollection', err });
+//       }
+//     );
+//   } else {
+//     log('animalIncome edgeCollection already exists');
+//   }
+// }
+
+// async function createFromAnimalToOutEdge(db) {
+//   const animalOutEdge = await db.edgeCollection('fromAnimalToOut');
+//   const result = await animalOutEdge.exists();
+//   if (!result) {
+//     animalOutEdge.create().then(
+//       () => {
+//         log('animalOut edgeCollection created');
+//       },
+//       err => {
+//         throw new Error({ msg: 'Failed to create edgeCollection', err });
+//       }
+//     );
+//   } else {
+//     log('animalOut edgeCollection already exists');
+//   }
+// }
+
+// async function createFromAnimalToMilkEdge(db) {
+//   const animalMilkEdge = await db.edgeCollection('fromAnimalToMilk');
+//   const result = await animalMilkEdge.exists();
+//   if (!result) {
+//     animalMilkEdge.create().then(
+//       () => {
+//         log('animalMilk edgeCollection created');
+//       },
+//       err => {
+//         throw new Error({ msg: 'Failed to create edgeCollection', err });
+//       }
+//     );
+//   } else {
+//     log('animalMilk edgeCollection already exists');
+//   }
+// }
+
+// async function createFromAnimalToPregnancyEdge(db) {
+//   const animalPregnancyEdge = await db.edgeCollection('fromAnimalToPregnancy');
+//   const result = await animalPregnancyEdge.exists();
+//   if (!result) {
+//     animalPregnancyEdge.create().then(
+//       () => {
+//         log('animalPregnancy edgeCollection created');
+//       },
+//       err => {
+//         throw new Error({ msg: 'Failed to create edgeCollection', err });
+//       }
+//     );
+//   } else {
+//     log('animalPregnancy edgeCollection already exists');
+//   }
+// }
+
+// // async function createFromPregnancyToAnimalEdge(db) {
+// //   const pregnancyAnimalEdge = await db.edgeCollection('fromPregnancyToAnimal');
+// //   const result = await pregnancyAnimalEdge.exists();
+// //   if (!result) {
+// //     pregnancyAnimalEdge.create().then(
+// //       () => {
+// //         log('pregnancyAnimal edgeCollection created');
+// //       },
+// //       err => {
+// //         throw new Error({ msg: 'Failed to create edgeCollection', err });
+// //       }
+// //     );
+// //   } else {
+// //     log('pregnancyAnimal edgeCollection already exists');
+// //   }
+// // }
+
+// async function createFromDiseaseToDiseaseRelatedEdge(db) {
+//   const diseaseDiseaseRelated = await db.edgeCollection('fromDiseaseToDiseaseRelated');
+//   const result = await diseaseDiseaseRelated.exists();
+//   if (!result) {
+//     diseaseDiseaseRelated.create().then(
+//       () => {
+//         log('diseaseDiseaseRelated edgeCollection created');
+//       },
+//       err => {
+//         throw new Error({ msg: 'Failed to create edgeCollection', err });
+//       }
+//     );
+//   } else {
+//     log('diseaseDiseaseRelated edgeCollection already exists');
+//   }
+// }
+
+// async function createFromOutToDiseaseEdge(db) {
+//   const outDiseaseEdge = await db.edgeCollection('fromOutToDisease');
+//   const result = await outDiseaseEdge.exists();
+//   if (!result) {
+//     outDiseaseEdge.create().then(
+//       () => {
+//         log('outDiseaseEdge edgeCollection created');
+//       },
+//       err => {
+//         throw new Error({ msg: 'Failed to create edgeCollection', err });
+//       }
+//     );
+//   } else {
+//     log('outDiseaseEdge edgeCollection already exists');
+//   }
+// }
+
+// async function createFromOutToIncomeEdge(db) {
+//   const outIncomeEdge = await db.edgeCollection('fromOutToIncome');
+//   const result = await outIncomeEdge.exists();
+//   if (!result) {
+//     outIncomeEdge.create().then(
+//       () => {
+//         log('outIncomeEdge edgeCollection created');
+//       },
+//       err => {
+//         throw new Error({ msg: 'Failed to create edgeCollection', err });
+//       }
+//     );
+//   } else {
+//     log('outIncomeEdge edgeCollection already exists');
+//   }
+// }
 /* -------------------------------------------------------------------------- */
 /*                                    views                                   */
 /* -------------------------------------------------------------------------- */
@@ -299,19 +699,26 @@ export default db => {
         await createAnimalsCollection(db);
         await createUsersCollection(db);
         await createLogsCollection(db);
-        // await createRecordsCollection(db);
         await createWeightsCollection(db);
         await createExpensesCollection(db);
-        await createVaccineCollection(db);
-        await createDiseaseCollection(db);
+        await createVaccinesCollection(db);
+        await createDiseasesCollection(db);
+        await createDiseaseStepsCollection(db);
+        await createIncomesCollection(db);
+        await createExitsCollection(db);
+        await createMilksCollection(db);
+        await createPregnanciesCollection(db);
         // edges
-        // await createAnimalRecodEdge(db);
-        await createFromAnimalToAnimalEdge(db);
-        await createFromAnimalToWeightsEdge(db);
-        await createFromAnimalToExpensesEdge(db);
-        await createFromVaccineToExpensesEdge(db);
-        await createFromAnimalToVaccineEdge(db);
-        await createFromAnimalToDiseaseEdge(db);
+        await createAnimalEdges(db);
+        await createUserEdges(db);
+        await createWeightEdges(db);
+        await createExpenseEdges(db);
+        await createVaccineEdges(db);
+        await createDiseaseEdges(db);
+        await createIncomeEdges(db);
+        await createExitEdges(db);
+        await createMilkEdges(db);
+        await createPregnancyEdges(db);
         //views
         await createAnimalView(db);
         // resolve

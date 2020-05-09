@@ -28,38 +28,80 @@ createCollections(db);
 /* -------------------------------------------------------------------------- */
 /*                                 collections                                */
 /* -------------------------------------------------------------------------- */
-const userCollection = db.collection('users');
-const animalCollection = db.collection('animals');
-const logCollection = db.collection('logs');
-const weightCollection = db.collection('weights');
-const expensesCollection = db.collection('expenses');
-const vaccineCollection = db.collection('vaccine');
+const Users = db.collection('users');
+const Animals = db.collection('animals');
+const Logs = db.collection('logs');
+const Weights = db.collection('weights');
+const Expenses = db.collection('expenses');
+const Vaccines = db.collection('vaccines');
+const Incomes = db.collection('incomes');
+const Exits = db.collection('exits');
+const Milks = db.collection('milks');
+const Pregnancies = db.collection('pregnancies');
+const Diseases = db.collection('diseases');
+const DiseaseSteps = db.collection('diseaseSteps');
+const Errors = db.collection('errors');
 
 /* -------------------------------------------------------------------------- */
 /*                              edge collections                              */
 /* -------------------------------------------------------------------------- */
-const fromAnimalToAnimal = db.edgeCollection('fromAnimalToAnimal');
-const fromAnimalToWeight = db.edgeCollection('fromAnimalToWeight');
-const fromAnimalToExpenses = db.edgeCollection('fromAnimalToExpenses');
-const fromVaccineToExpenses = db.edgeCollection('fromVaccineToExpenses');
-const fromAnimalToVaccine = db.edgeCollection('fromAnimalToVaccine');
+
+const UserEdges = db.edgeCollection('userEdges');
+const AnimalEdges = db.edgeCollection('animalEdges');
+const WeightEdges = db.edgeCollection('weightEdges');
+const ExpenseEdges = db.edgeCollection('expenseEdges');
+const VaccineEdges = db.edgeCollection('vaccineEdges');
+const IncomeEdges = db.edgeCollection('incomeEdges');
+const ExitEdges = db.edgeCollection('exitEdges');
+const MilkEdges = db.edgeCollection('milkEdges');
+const PregnancyEdges = db.edgeCollection('pregnancyEdges');
+const DiseaseEdges = db.edgeCollection('diseaseEdges');
+const LogEdges = db.edgeCollection('logEdges');
+
+// const fromAnimalToAnimal = db.edgeCollection('fromAnimalToAnimal');
+// const fromAnimalToWeight = db.edgeCollection('fromAnimalToWeight');
+// const fromAnimalToExpenses = db.edgeCollection('fromAnimalToExpenses');
+// // const fromVaccineToExpenses = db.edgeCollection('fromVaccineToExpenses');
+// const fromAnimalToVaccine = db.edgeCollection('fromAnimalToVaccine');
+// const fromAnimalToIncome = db.edgeCollection('fromAnimalToIncome');
+// const fromAnimalToOut = db.edgeCollection('fromAnimalToOut');
+// const fromAnimalToMilk = db.edgeCollection('fromAnimalToMilk');
+// const fromAnimalToPregnancy = db.edgeCollection('fromAnimalToPregnancy');
+// // const fromPregnancyToAnimal = db.edgeCollection('fromPregnancyToAnimal');
+// const fromAnimalToDisease = db.edgeCollection('fromAnimalToDisease');
+// const fromDiseaseToDiseaseRelated = db.edgeCollection('fromDiseaseToDiseaseRelated');
+// const fromOutToDisease = db.edgeCollection('fromOutToDisease');
+// const fromOutToIncome = db.edgeCollection('fromOutToIncome');
 /* -------------------------------------------------------------------------- */
 /*                                    views                                   */
 /* -------------------------------------------------------------------------- */
 
 export {
   db,
-  // collection
-  userCollection,
-  animalCollection,
-  logCollection,
-  weightCollection,
-  expensesCollection,
-  vaccineCollection,
-  // edge
-  fromAnimalToExpenses,
-  fromAnimalToWeight,
-  fromAnimalToAnimal,
-  fromVaccineToExpenses,
-  fromAnimalToVaccine,
+  // collections
+  Users,
+  Animals,
+  Logs,
+  Weights,
+  Expenses,
+  Vaccines,
+  Incomes,
+  Exits,
+  Milks,
+  Pregnancies,
+  Diseases,
+  DiseaseSteps,
+  Errors,
+  // edges
+  UserEdges,
+  AnimalEdges,
+  WeightEdges,
+  ExpenseEdges,
+  VaccineEdges,
+  IncomeEdges,
+  ExitEdges,
+  MilkEdges,
+  PregnancyEdges,
+  DiseaseEdges,
+  LogEdges,
 };

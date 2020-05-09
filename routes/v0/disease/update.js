@@ -1,4 +1,4 @@
-import { db, Users, Animals, Logs, Weights } from '../../../DB/db';
+import { db, Users, Logs, Diseases } from '../../../DB/db';
 import jwt from 'jsonwebtoken';
 import keys from '../../../config/keys';
 
@@ -26,35 +26,41 @@ export default data => {
       const user = await findUser(decoded);
 
       const trx = await db.beginTransaction({
-        write: ['logs', 'weights'],
+        read: ['diseases'],
+        write: ['logs', 'diseases'],
       });
 
-      const weight = await trx.run(() => Weights.document(data.entry.key));
-      console.log('weight is :: ', weight);
+      const disease = await trx.run(() => Diseases.document(data.entry.key));
+      console.log('disease is :: ', disease);
 
       await trx.run(() =>
         Logs.save({
           value: 'update',
-          type: 'weight',
-          entryId: weight._id,
+          type: 'disease',
+          entryId: disease._id,
           userId: user._id,
           form: {
-            date: weight.date,
-            value: weight.value,
+            value: disease.value,
+            date: disease.date,
+            updatedAt: disease.updatedAt,
+            comment: disease.comment,
           },
           to: {
-            value:
-              typeof data.entry.value === 'number' ? data.entry.value : Number(data.entry.value),
+            value: data.entry.value[0],
             date: data.entry.date,
+            updatedAt: data.entry.updatedAt,
+            comment: data.entry.comment,
           },
           createdAt: Date.now(),
         })
       );
+
       await trx.run(() =>
-        Weights.update(weight, {
-          value: typeof data.entry.value === 'number' ? data.entry.value : Number(data.entry.value),
+        Diseases.update(disease, {
+          value: data.entry.value[0],
           date: data.entry.date,
           updatedAt: data.entry.updatedAt,
+          comment: data.entry.comment,
         })
       );
 

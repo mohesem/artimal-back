@@ -1,8 +1,8 @@
-import { db, Users, Animals, Logs, Weights, AnimalEdges } from '../../../DB/db';
+import { db, Users, Animals, Diseases, AnimalEdges, Logs } from '../../../DB/db';
 import jwt from 'jsonwebtoken';
 import keys from '../../../config/keys';
 
-import { animalNotFound, serverError, successAction } from '../../errors';
+import { animalNotFound, serverError, successAction, wrongToken, animalIsOut } from '../../errors';
 
 const findUser = decoded => {
   return new Promise(async (resolve, reject) => {
@@ -10,48 +10,52 @@ const findUser = decoded => {
     if (user) {
       resolve(user);
     } else {
-      reject({ status: 400, error: 'دامی با این پلاک وجود ندارد' });
+      reject({ status: 400, error: wrongToken });
     }
   });
 };
 
 export default data => {
-  console.log('================================', data);
   return new Promise(async (resolve, reject) => {
     try {
+      // _* process verify user
       const decoded = await jwt.verify(data.token, keys.jwtKey);
       const user = await findUser(decoded);
-      const animalExists = await Animals.documentExists(`${data.entry.key}`);
-      if (!animalExists) reject({ status: 400, error: animalNotFound });
 
+      // _* transaction config
+      const trx = await db.beginTransaction({
+        read: ['animals'],
+        write: ['diseases', 'animals', 'animalEdges', 'logs'],
+      });
+
+      // _* check animal is not out of stock
       const animal = await Animals.document(data.entry.key);
       if (animal.out === true) throw { status: 401, error: animalIsOut };
 
-      const trx = await db.beginTransaction({
-        write: ['logs', 'animals', 'weights', 'animalEdges'],
-      });
-
-      const weight = await trx.run(() =>
-        Weights.save({
-          value: typeof data.entry.value === 'number' ? data.entry.value : Number(data.entry.value),
-          createdAt: Date.now(),
+      // _* create disease, edge and log
+      const disease = await trx.run(() =>
+        Diseases.save({
+          value: data.entry.value[0],
           date: data.entry.date,
+          createdAt: Date.now(),
+          comment: data.entry.comment,
+          active: true,
         })
       );
 
       await trx.run(() =>
         AnimalEdges.save({
-          value: 'weight',
+          value: 'disease',
           _from: `animals/${data.entry.key}`,
-          _to: weight._id,
+          _to: disease._id,
         })
       );
 
       await trx.run(() =>
         Logs.save({
           value: 'create',
-          type: 'weight',
-          entryId: weight._id,
+          type: 'disease',
+          entryId: animal._id,
           userId: user._id,
           createdAt: Date.now(),
         })

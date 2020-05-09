@@ -7,8 +7,8 @@ export default () => {
       db.query(
         `
         FOR animal IN animals
-        FILTER !animal.death
-        FILTER !animal.sold
+        FILTER animal.deleted != true
+        FILTER animal.exit != true
         COLLECT WITH COUNT INTO length
         RETURN length
         `

@@ -4,13 +4,8 @@ import { serverError, noResult } from '../../errors';
 async function search(query) {
   return new Promise((resolve, reject) => {
     db.query(query).then(docs => {
-      console.log('????????????', docs);
       const result = docs._result;
-      if (result.length) {
-        resolve(result);
-      } else {
-        reject({ status: 404, error: noResult });
-      }
+      resolve(result);
     });
   });
 }
@@ -21,9 +16,9 @@ const createQuerySingle = key => {
     FOR animal IN animals
     FILTER animal._key == '${key}'
     FOR vaccine IN 1..1 OUTBOUND animal fromAnimalToVaccine
-    FOR expense IN 1..1 OUTBOUND vaccine fromVaccineToExpenses
+    FILTER vaccine.deleted != true
     SORT DATE_TIMESTAMP(vaccine.createdAt) ASC
-    RETURN {vaccine, expense}
+    RETURN {vaccine}
     `;
     resolve(q);
     reject();
@@ -37,7 +32,6 @@ export default body => {
     if (keys.length === 1) {
       try {
         const query = await createQuerySingle(keys[0]);
-        console.log('query is', query);
         const result = await search(query);
         resolve({ status: 200, result });
       } catch (error) {

@@ -1,15 +1,10 @@
 import { Router } from 'express';
 import create from './create';
 import read from './read';
+import remove from './remove';
+import update from './update';
 
 const router = Router();
-
-router.put('/create', (req, res) => {
-  console.log('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%R');
-  create(req.body)
-    .then(response => res.status(response.status).send({ result: response.result }))
-    .catch(response => res.status(response.status).send({ error: response.error }));
-});
 
 router.post('/read', (req, res) => {
   read(req.body)
@@ -17,4 +12,24 @@ router.post('/read', (req, res) => {
     .catch(response => res.status(response.status).send({ error: response.error }));
 });
 
+/* -------------------------------------------------------------------------- */
+/*                                     new                                    */
+/* -------------------------------------------------------------------------- */
+router.post('/', (req, res) => {
+  create(req.body)
+    .then(response => res.status(response.status).send({ result: response.result }))
+    .catch(response => res.status(response.status).send({ error: response.error }));
+});
+
+router.delete('/:token/:key', (req, res) => {
+  remove(req.params.token, req.params.key)
+    .then(response => res.status(response.status).send({ result: response.result }))
+    .catch(response => res.status(response.status).send({ error: response.error }));
+});
+
+router.put('/', (req, res) => {
+  update(req.body)
+    .then(response => res.status(response.status).send({ result: response.result }))
+    .catch(response => res.status(response.status).send({ error: response.error }));
+});
 export default router;

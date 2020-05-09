@@ -1,20 +1,12 @@
-import {
-  db,
-  userCollection,
-  animalCollection,
-  vaccineCollection,
-  expensesCollection,
-  fromAnimalToVaccine,
-  fromVaccineToExpenses,
-} from '../../../DB/db';
+import { db, Users, Animals, Vaccines, AnimalEdges, Logs } from '../../../DB/db';
 import jwt from 'jsonwebtoken';
 import keys from '../../../config/keys';
 
-import { animalNotFound, serverError, successAction, wrongToken } from '../../errors';
+import { animalNotFound, serverError, successAction, wrongToken, animalIsOut } from '../../errors';
 
 const findUser = decoded => {
   return new Promise(async (resolve, reject) => {
-    const user = await userCollection.document(decoded.key);
+    const user = await Users.document(decoded.key);
     if (user) {
       resolve(user);
     } else {
@@ -29,49 +21,47 @@ export default data => {
     try {
       const decoded = await jwt.verify(data.token, keys.jwtKey);
       console.log(decoded);
-      await findUser(decoded);
-      const animalExists = await animalCollection.documentExists(`${data.entry.key}`);
+      const user = await findUser(decoded);
+      const animalExists = await Animals.documentExists(`${data.entry.key}`);
       console.log('****&&&^^^', animalExists);
-      if (!animalExists) throw new Error({ status: 400, error: animalNotFound });
+      if (!animalExists) throw { status: 400, error: animalNotFound };
 
       const trx = await db.beginTransaction({
-        write: ['vaccine', 'animals', 'expenses', 'fromVaccineToExpenses', 'fromAnimalToVaccine'],
+        read: ['animals'],
+        write: ['vaccines', 'animals', 'animalEdges', 'logs'],
       });
 
-      const vaccine = await trx.run(() =>
-        vaccineCollection.save({
-          userkey: decoded.key,
-          username: decoded.username,
-          value: data.entry.vaccine[0],
-          createdAt: data.entry.date,
-        })
-      );
+      const animal = await Animals.document(data.entry.key);
+      if (animal.out === true) throw { status: 401, error: animalIsOut };
 
-      const expense = await trx.run(() =>
-        expensesCollection.save({
-          value: data.entry.price,
-          createdAt: data.entry.date,
-          type: 'vaccine',
+      console.log('animal is ::: ', animal);
+
+      const vaccine = await trx.run(() =>
+        Vaccines.save({
+          value: data.entry.vaccine,
+          date: data.entry.date,
+          createdAt: Date.now(),
         })
       );
 
       await trx.run(() =>
-        fromAnimalToVaccine.save({
-          createdAt: data.entry.date,
-          _from: `animals/${data.entry.key}`,
+        AnimalEdges.save({
+          value: 'vaccine',
+          _from: animal._id,
           _to: vaccine._id,
         })
       );
 
       await trx.run(() =>
-        fromVaccineToExpenses.save({
-          _from: vaccine._id,
-          _to: expense._id,
+        Logs.save({
+          value: 'create',
+          type: 'vaccine',
+          entryId: vaccine._id,
+          userId: user._id,
+          createdAt: Date.now(),
         })
       );
-
       await trx.commit();
-
       resolve({ status: 200, result: successAction });
     } catch (error) {
       console.log(error);

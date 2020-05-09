@@ -6,17 +6,22 @@ async function search(query) {
     db.query(query).then(docs => {
       const result = docs._result;
       resolve(result);
+      reject();
+      // else {
+      //   reject({ status: 404, error: noResult });
+      // }
     });
   });
 }
 
 const createQuery = key => {
+  // TODO: add childrens
   return new Promise((resolve, reject) => {
     const q = `
-    FOR weight, edge IN OUTBOUND 'animals/${key}' animalEdges
-    FILTER edge.value == 'weight'
-    FILTER weight.deleted != true
-    RETURN weight
+    FOR vertex, edge IN OUTBOUND 'animals/${key}' animalEdges
+    FILTER edge.value == 'exit'
+    Filter vertex.deleted != true
+    return vertex
     `;
     resolve(q);
     reject();
@@ -24,13 +29,12 @@ const createQuery = key => {
 };
 
 export default key => {
-  // const { animalKeys } = body;
-  // console.log(`got the req, ${animalKeys}`);
   return new Promise(async (resolve, reject) => {
     try {
       const query = await createQuery(key);
       const result = await search(query);
-      resolve({ status: 200, result });
+      console.log('result is ::: ', result);
+      resolve({ status: 200, result: result[0] });
     } catch (error) {
       if (error.status) reject(error);
       else reject({ status: 500, error: serverError });

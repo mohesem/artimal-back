@@ -11,21 +11,11 @@ import {
   sexMismatch,
 } from '../../errors';
 
-import {
-  db,
-  // logCollection,
-  userCollection,
-  animalCollection,
-  weightCollection,
-  fromAnimalToWeight,
-  fromAnimalToAnimal,
-  expensesCollection,
-  fromAnimalToExpenses,
-} from '../../../DB/db';
+import { db, Logs, Users, Animals, Weights, Expenses, AnimalEdges } from '../../../DB/db';
 
 const findUser = decoded => {
   return new Promise(async (resolve, reject) => {
-    const user = await userCollection.document(`users/${decoded.key}`);
+    const user = await Users.document(`users/${decoded.key}`);
     if (!user) reject({ status: 401, msg: unauthorized });
     if (user.username !== decoded.username) reject({ status: 401, msg: unauthorized });
     else resolve(user);
@@ -33,42 +23,64 @@ const findUser = decoded => {
 };
 
 async function createAnimalObject(animal, decoded) {
+  console.log('animal is :: ', animal);
   return new Promise((resolve, reject) => {
+    // general entries validation
+
+    if (!animal.weight) reject({ status: 400, error: badRequest });
+    console.log(!animal.weight, 2);
+
+    if (!animal.type) reject({ status: 400, error: badRequest });
+    if (!animal.key) reject({ status: 400, error: badRequest });
+    if (!animal.entryDate) reject({ status: 400, error: badRequest });
+    if (!animal.birthDate) reject({ status: 400, error: badRequest });
+    if (animal.type !== 'گاو' && !animal.race) reject({ status: 400, error: badRequest });
+    if (typeof animal.sex !== 'number') reject({ status: 400, error: badRequest });
+    if (animal.type === 'گوسفند' && !animal.gene) reject({ status: 400, error: badRequest });
+
+    if (animal.entryType === 1 && !animal.price) reject({ status: 400, error: badRequest });
+
+    if (animal.entryType === 0 && (!animal.fatherKey || !animal.motherKey)) {
+      reject({ status: 400, error: badRequest });
+    }
+
     if (animal.entryType === 0) {
       const obj = {
         _key: animal.key,
-        entryDate: animal.entryDate,
         birthDate: animal.birthDate,
         entryType: animal.entryType,
         type: animal.type,
         race: animal.race,
         sex: animal.sex,
-        createdAt: animal.entryDate,
+        createdAt: Date.now(),
+        gene: animal.type === 'گوسفند' ? animal.gene : undefined,
       };
       resolve(obj);
     } else if (animal.entryType === 1) {
       const obj = {
         _key: animal.key,
-        entryDate: animal.entryDate,
         birthDate: animal.birthDate,
         entryType: animal.entryType,
         type: animal.type,
         race: animal.race,
         sex: animal.sex,
-        createdAt: animal.entryDate,
+        createdAt: Date.now(),
+        gene: animal.type === 'گوسفند' ? animal.gene : undefined,
       };
       resolve(obj);
     } else if (animal.entryType === 2) {
       const obj = {
         _key: animal.key,
-        entryDate: animal.entryDate,
         birthDate: animal.birthDate,
         entryType: animal.entryType,
         type: animal.type,
         race: animal.race,
         sex: animal.sex,
-        createdAt: animal.entryDate,
+        createdAt: Date.now(),
+        gene: animal.type === 'گوسفند' ? animal.gene : undefined,
+        exit: false,
       };
+      console.log(obj);
       resolve(obj);
     } else {
       reject({ status: 400, error: badRequest });
@@ -77,174 +89,179 @@ async function createAnimalObject(animal, decoded) {
 }
 
 export default data => {
-  console.log(data);
+  console.log('...............................................', data);
   return new Promise(async (resolve, reject) => {
-    // TODO: check if mother and father exists
     try {
+      // check user
       const decoded = await jwt.verify(data.token, keys.jwtKey);
       const user = await findUser(decoded);
 
-      if (data.animal.entryType === 0) {
-        const fatherExists = await animalCollection.document(`animals/${data.animal.fatherkey}`);
-        if (!fatherExists)
-          throw new Error({
-            status: 400,
-            error: badRequest,
-            printErrors: [{ father: fatherDosentExists }],
-          });
-        if (fatherExists.sex !== 0)
-          throw new Error({
-            status: 400,
-            error: badRequest,
-            printErrors: [{ father: sexMismatch }],
-          });
+      // check if any animal exists with same key
+      const documentExists = await Animals.documentExists(`${data.animal.key}`);
+      if (documentExists === true) throw { status: 401, error: animalWithSameKeyExists };
 
-        const motherExists = await animalCollection.document(`animals/${data.animal.motherKey}`);
-        if (!motherExists)
-          throw new Error({
-            status: 400,
-            error: badRequest,
-            printErrors: [{ mother: motherDosentExists }],
-          });
-        if (motherExists.sex !== 0)
-          throw new Error({
-            status: 400,
-            error: badRequest,
-            printErrors: [{ mother: sexMismatch }],
-          });
-      }
-
-      const documentExists = await animalCollection.documentExists(`${data.animal.key}`);
-      if (documentExists === true) throw new Error({ status: 401, error: animalWithSameKeyExists });
-
-      // NOTE: filtering fileds to get final object based on entryType
+      // creating animal object and validating request entries based on entryType
       const animalObject = await createAnimalObject(data.animal, decoded);
 
-      console.log(animalObject);
+      // console.log(animalObject);
 
-      console.log('starting db transaction');
+      // console.log('starting db transaction');
 
       const trx = await db.beginTransaction({
-        write: [
-          'logs',
-          'animals',
-          'weights',
-          'fromAnimalToWeight',
-          'fromAnimalToAnimal',
-          'expenses',
-          'fromAnimalToExpenses',
-        ],
+        write: ['logs', 'animals', 'weights', 'expenses', 'animalEdges'],
       });
 
-      console.log('transaction is already started');
-
-      // await trx.run(() =>
-      //   logCollection.save({
-      //     createdAt: data.animal.date,
-      //     userkey: decoded.key,
-      //     action: 'PUT-animal',
-      //     animalKey: animalObject._key,
-      //     entryType: animalObject.entryType,
-      //   })
-      // );
-
-      const animal = await trx.run(() => animalCollection.save(animalObject));
-
-      console.log('animal is : ', animal);
+      const animal = await trx.run(() => Animals.save(animalObject));
 
       const weight = await trx.run(() =>
-        weightCollection.save({
-          userkey: decoded.key,
-          weight: data.animal.weight,
-          createdAt: data.animal.entryDate,
+        Weights.save({
+          value:
+            typeof data.animal.weight === 'number'
+              ? data.animal.weight
+              : Number(data.animal.weight),
+          createdAt: Date.now(),
+          date: data.animal.entryDate,
         })
       );
 
-      // await trx.run(() =>
-      //   logCollection.save({
-      //     userkey: decoded.key,
-      //     action: 'PUT-weight',
-      //     animalKey: animalObject._key,
-      //     weightKey: weight._key,
-      //     createdAt: data.animal.date,
-      //   })
-      // );
-
       await trx.run(() =>
-        fromAnimalToWeight.save({
+        AnimalEdges.save({
+          value: 'weight',
           _from: animal._id,
           _to: weight._id,
         })
       );
 
-      if (data.animal.entryType === 0) {
-        // father
-        await trx.run(() =>
-          fromAnimalToAnimal.save({
-            createdAt: data.animal.entryDate,
-            type: 'father',
-            _from: animal._id,
-            _to: `animals/${data.animal.fatherkey}`,
-          })
-        );
-        // mother
-        await trx.run(() =>
-          fromAnimalToAnimal.save({
-            createdAt: data.animal.entryDate,
-            type: 'mother',
-            _from: animal._id,
-            _to: `animals/${data.animal.motherkey}`,
-          })
-        );
-        // childrenOfFather
-        await trx.run(() =>
-          fromAnimalToAnimal.save({
-            createdAt: data.animal.entryDate,
-            type: 'children',
-            sex: data.animal.sex,
-            _from: `animals/${data.animal.fatherkey}`,
-            _to: animal._id,
-          })
-        );
-        // childrenOfMother
-        await trx.run(() =>
-          fromAnimalToAnimal.save({
-            createdAt: data.animal.entryDate,
-            type: 'children',
-            sex: data.animal.sex,
-            _from: `animals/${data.animal.motherkey}`,
-            _to: animal._id,
-          })
-        );
-      }
+      await trx.run(() =>
+        Logs.save({
+          value: 'create',
+          type: 'animal',
+          entryId: animal._id,
+          userId: user._id,
+          createdAt: Date.now(),
+        })
+      );
 
-      // NOTE: if animal is bought add its price to expenses
+      await trx.run(() =>
+        Logs.save({
+          value: 'create',
+          type: 'weight',
+          entryId: weight._id,
+          userId: user._id,
+          createdAt: Date.now(),
+        })
+      );
+
       if (data.animal.entryType === 1) {
-        // price: animal.price,
-
         const expense = await trx.run(() =>
-          expensesCollection.save({
-            value: data.animal.price,
-            createdAt: data.animal.entryDate,
+          Expenses.save({
+            value:
+              typeof data.animal.price === 'number' ? data.animal.price : Number(data.animal.price),
+            createdAt: Date.now(),
+            date: data.animal.entryDate,
             type: 'buy-animal',
           })
         );
 
         await trx.run(() =>
-          fromAnimalToExpenses.save({
+          AnimalEdges.save({
+            value: 'expense',
             _from: animal._id,
             _to: expense._id,
           })
         );
+
+        await trx.run(() =>
+          Logs.save({
+            value: 'create',
+            type: 'expense',
+            entryId: expense._id,
+            userId: user._id,
+            createdAt: Date.now(),
+          })
+        );
       }
+
+      // if (data.animal.entryType === 0) {
+      //   // father
+      //   await trx.run(() =>
+      //     fromAnimalToAnimal.save({
+      //       createdAt: Date.now(),
+      //       type: 'father',
+      //       _from: animal._id,
+      //       _to: `animals/${data.animal.fatherkey}`,
+      //     })
+      //   );
+      //   // mother
+      //   await trx.run(() =>
+      //     fromAnimalToAnimal.save({
+      //       createdAt: Date.now(),
+      //       type: 'mother',
+      //       _from: animal._id,
+      //       _to: `animals/${data.animal.motherkey}`,
+      //     })
+      //   );
+      //   // childrenOfFather
+      //   await trx.run(() =>
+      //     fromAnimalToAnimal.save({
+      //       createdAt: Date.now(),
+      //       type: 'children',
+      //       sex: data.animal.sex,
+      //       _from: `animals/${data.animal.fatherkey}`,
+      //       _to: animal._id,
+      //     })
+      //   );
+      //   // childrenOfMother
+      //   await trx.run(() =>
+      //     fromAnimalToAnimal.save({
+      //       createdAt: Date.now(),
+      //       type: 'children',
+      //       sex: data.animal.sex,
+      //       _from: `animals/${data.animal.motherkey}`,
+      //       _to: animal._id,
+      //     })
+      //   );
+      // }
+
+      // // NOTE: if animal is bought add its price to expenses
 
       await trx.commit();
 
-      resolve({ status: 200, msg: 'دام با موفقیت ایجاد شد' });
+      resolve({ status: 200, result: 'دام با موفقیت ایجاد شد' });
     } catch (error) {
-      // console.log(error);
+      console.log(error);
       if (error.status) reject(error);
       else reject({ status: 500, error: serverError });
     }
   });
 };
+
+// if (data.animal.entryType === 0) {
+//   const fatherExists = await Animals.document(`animals/${data.animal.fatherkey}`);
+//   if (!fatherExists)
+//     throw new Error({
+//       status: 400,
+//       error: badRequest,
+//       printErrors: [{ father: fatherDosentExists }],
+//     });
+//   if (fatherExists.sex !== 0)
+//     throw new Error({
+//       status: 400,
+//       error: badRequest,
+//       printErrors: [{ father: sexMismatch }],
+//     });
+
+//   const motherExists = await Animals.document(`animals/${data.animal.motherKey}`);
+//   if (!motherExists)
+//     throw new Error({
+//       status: 400,
+//       error: badRequest,
+//       printErrors: [{ mother: motherDosentExists }],
+//     });
+//   if (motherExists.sex !== 0)
+//     throw new Error({
+//       status: 400,
+//       error: badRequest,
+//       printErrors: [{ mother: sexMismatch }],
+//     });
+// }

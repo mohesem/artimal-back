@@ -10,13 +10,14 @@ async function search(query) {
   });
 }
 
-const createQuery = key => {
+const createQuerySingle = key => {
+  console.log({ key });
   return new Promise((resolve, reject) => {
     const q = `
-    FOR weight, edge IN OUTBOUND 'animals/${key}' animalEdges
-    FILTER edge.value == 'weight'
-    FILTER weight.deleted != true
-    RETURN weight
+    FOR vertex, edge IN OUTBOUND 'animals/${key}' animalEdges
+    FILTER edge.value == 'disease'
+    Filter vertex.deleted != true
+    return vertex
     `;
     resolve(q);
     reject();
@@ -24,11 +25,9 @@ const createQuery = key => {
 };
 
 export default key => {
-  // const { animalKeys } = body;
-  // console.log(`got the req, ${animalKeys}`);
   return new Promise(async (resolve, reject) => {
     try {
-      const query = await createQuery(key);
+      const query = await createQuerySingle(key);
       const result = await search(query);
       resolve({ status: 200, result });
     } catch (error) {

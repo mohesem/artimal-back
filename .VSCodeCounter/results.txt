@@ -1,58 +1,81 @@
-Date : 2020-04-21 03:18:41
+Date : 2020-05-02 23:09:20
 Directory : /home/emad/Documents/projects/Artiman/backend/routes
-Total : 27 files,  683 codes, 197 comments, 125 blanks, all 1005 lines
+Total : 46 files,  1733 codes, 189 comments, 316 blanks, all 2238 lines
 
 Languages
 +------------+------------+------------+------------+------------+------------+
 | language   | files      | code       | comment    | blank      | total      |
 +------------+------------+------------+------------+------------+------------+
-| JavaScript |         27 |        683 |        197 |        125 |      1,005 |
+| JavaScript |         46 |      1,733 |        189 |        316 |      2,238 |
 +------------+------------+------------+------------+------------+------------+
 
 Directories
-+---------------------------------------------------------------------------+------------+------------+------------+------------+------------+
-| path                                                                      | files      | code       | comment    | blank      | total      |
-+---------------------------------------------------------------------------+------------+------------+------------+------------+------------+
-| .                                                                         |         27 |        683 |        197 |        125 |      1,005 |
-| v0                                                                        |         24 |        634 |        128 |        106 |        868 |
-| v0/animal                                                                 |          6 |        312 |         29 |         39 |        380 |
-| v0/expenses                                                               |          2 |         48 |          0 |          8 |         56 |
-| v0/key                                                                    |          2 |         21 |          0 |          7 |         28 |
-| v0/user                                                                   |          7 |         91 |         49 |         19 |        159 |
-| v0/vaccine                                                                |          2 |         36 |         40 |         13 |         89 |
-| v0/weight                                                                 |          5 |        126 |         10 |         20 |        156 |
-+---------------------------------------------------------------------------+------------+------------+------------+------------+------------+
++----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                             | files      | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                |         46 |      1,733 |        189 |        316 |      2,238 |
+| v0                                                                               |         43 |      1,672 |        189 |        307 |      2,168 |
+| v0/animal                                                                        |          7 |        313 |         74 |         47 |        434 |
+| v0/disease                                                                       |          3 |        125 |         12 |         22 |        159 |
+| v0/expenses                                                                      |          2 |         50 |          0 |          8 |         58 |
+| v0/key                                                                           |          2 |         21 |          0 |          7 |         28 |
+| v0/milk                                                                          |          2 |         64 |          0 |         13 |         77 |
+| v0/out                                                                           |          4 |        254 |          0 |         48 |        302 |
+| v0/pregnancy                                                                     |          6 |        253 |         38 |         53 |        344 |
+| v0/user                                                                          |          7 |         91 |         49 |         19 |        159 |
+| v0/vaccine                                                                       |          5 |        254 |          3 |         47 |        304 |
+| v0/weight                                                                        |          5 |        247 |         13 |         43 |        303 |
++----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
 
 Files
-+---------------------------------------------------------------------------+------------+------------+------------+------------+------------+
-| filename                                                                  | language   | code       | comment    | blank      | total      |
-+---------------------------------------------------------------------------+------------+------------+------------+------------+------------+
-| /home/emad/Documents/projects/Artiman/backend/routes/errors.js            | JavaScript |         28 |          0 |          2 |         30 |
-| /home/emad/Documents/projects/Artiman/backend/routes/routers.js           | JavaScript |          4 |          0 |          2 |          6 |
-| /home/emad/Documents/projects/Artiman/backend/routes/v0.js                | JavaScript |         17 |         69 |         15 |        101 |
-| /home/emad/Documents/projects/Artiman/backend/routes/v0/animal/create.js  | JavaScript |        195 |         28 |         22 |        245 |
-| /home/emad/Documents/projects/Artiman/backend/routes/v0/animal/delete.js  | JavaScript |          0 |          0 |          1 |          1 |
-| /home/emad/Documents/projects/Artiman/backend/routes/v0/animal/detail.js  | JavaScript |         52 |          0 |          4 |         56 |
-| /home/emad/Documents/projects/Artiman/backend/routes/v0/animal/index.js   | JavaScript |         21 |          0 |          6 |         27 |
-| /home/emad/Documents/projects/Artiman/backend/routes/v0/animal/read.js    | JavaScript |         44 |          1 |          5 |         50 |
-| /home/emad/Documents/projects/Artiman/backend/routes/v0/animal/update.js  | JavaScript |          0 |          0 |          1 |          1 |
-| /home/emad/Documents/projects/Artiman/backend/routes/v0/expenses/index.js | JavaScript |          9 |          0 |          4 |         13 |
-| /home/emad/Documents/projects/Artiman/backend/routes/v0/expenses/read.js  | JavaScript |         39 |          0 |          4 |         43 |
-| /home/emad/Documents/projects/Artiman/backend/routes/v0/key/index.js      | JavaScript |          9 |          0 |          5 |         14 |
-| /home/emad/Documents/projects/Artiman/backend/routes/v0/key/newKey.js     | JavaScript |         12 |          0 |          2 |         14 |
-| /home/emad/Documents/projects/Artiman/backend/routes/v0/user/create.js    | JavaScript |          0 |          0 |          1 |          1 |
-| /home/emad/Documents/projects/Artiman/backend/routes/v0/user/delete.js    | JavaScript |          0 |          0 |          1 |          1 |
-| /home/emad/Documents/projects/Artiman/backend/routes/v0/user/index.js     | JavaScript |         15 |          3 |          5 |         23 |
-| /home/emad/Documents/projects/Artiman/backend/routes/v0/user/read.js      | JavaScript |          0 |          0 |          1 |          1 |
-| /home/emad/Documents/projects/Artiman/backend/routes/v0/user/signin.js    | JavaScript |         53 |         30 |          7 |         90 |
-| /home/emad/Documents/projects/Artiman/backend/routes/v0/user/update.js    | JavaScript |          0 |          0 |          1 |          1 |
-| /home/emad/Documents/projects/Artiman/backend/routes/v0/user/verify.js    | JavaScript |         23 |         16 |          3 |         42 |
-| /home/emad/Documents/projects/Artiman/backend/routes/v0/vaccine/create.js | JavaScript |         27 |         40 |          9 |         76 |
-| /home/emad/Documents/projects/Artiman/backend/routes/v0/vaccine/index.js  | JavaScript |          9 |          0 |          4 |         13 |
-| /home/emad/Documents/projects/Artiman/backend/routes/v0/weight/create.js  | JavaScript |         65 |          0 |          9 |         74 |
-| /home/emad/Documents/projects/Artiman/backend/routes/v0/weight/delete.js  | JavaScript |          0 |          0 |          1 |          1 |
-| /home/emad/Documents/projects/Artiman/backend/routes/v0/weight/index.js   | JavaScript |         16 |          0 |          5 |         21 |
-| /home/emad/Documents/projects/Artiman/backend/routes/v0/weight/read.js    | JavaScript |         45 |         10 |          4 |         59 |
-| /home/emad/Documents/projects/Artiman/backend/routes/v0/weight/update.js  | JavaScript |          0 |          0 |          1 |          1 |
-| Total                                                                     |            |        683 |        197 |        125 |      1,005 |
-+---------------------------------------------------------------------------+------------+------------+------------+------------+------------+
++----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| filename                                                                         | language   | code       | comment    | blank      | total      |
++----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| /home/emad/Documents/projects/Artiman/backend/routes/errors.js                   | JavaScript |         32 |          0 |          2 |         34 |
+| /home/emad/Documents/projects/Artiman/backend/routes/routers.js                  | JavaScript |          4 |          0 |          2 |          6 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0.js                       | JavaScript |         25 |          0 |          5 |         30 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/animal/countTotal.js     | JavaScript |         29 |          0 |          2 |         31 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/animal/create.js         | JavaScript |        160 |         73 |         27 |        260 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/animal/delete.js         | JavaScript |          0 |          0 |          1 |          1 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/animal/detail.js         | JavaScript |         52 |          0 |          4 |         56 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/animal/index.js          | JavaScript |         27 |          0 |          7 |         34 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/animal/read.js           | JavaScript |         45 |          1 |          5 |         51 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/animal/update.js         | JavaScript |          0 |          0 |          1 |          1 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/disease/create.js        | JavaScript |         70 |          0 |         11 |         81 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/disease/index.js         | JavaScript |         15 |         12 |          7 |         34 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/disease/read.js          | JavaScript |         40 |          0 |          4 |         44 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/expenses/index.js        | JavaScript |         10 |          0 |          4 |         14 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/expenses/totalValue.js   | JavaScript |         40 |          0 |          4 |         44 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/key/index.js             | JavaScript |          9 |          0 |          5 |         14 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/key/newKey.js            | JavaScript |         12 |          0 |          2 |         14 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/milk/create.js           | JavaScript |         55 |          0 |          9 |         64 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/milk/index.js            | JavaScript |          9 |          0 |          4 |         13 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/out/death.js             | JavaScript |         69 |          0 |         13 |         82 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/out/index.js             | JavaScript |         21 |          0 |          6 |         27 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/out/sell.js              | JavaScript |         82 |          0 |         14 |         96 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/out/slaughter.js         | JavaScript |         82 |          0 |         15 |         97 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/pregnancy/create.js      | JavaScript |         77 |          1 |         17 |         95 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/pregnancy/index.js       | JavaScript |         27 |          3 |          7 |         37 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/pregnancy/read.js        | JavaScript |         42 |          4 |          4 |         50 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/pregnancy/readDetails.js | JavaScript |         41 |          2 |          4 |         47 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/pregnancy/remove.js      | JavaScript |         66 |         28 |         20 |        114 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/pregnancy/update.js      | JavaScript |          0 |          0 |          1 |          1 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/user/create.js           | JavaScript |          0 |          0 |          1 |          1 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/user/delete.js           | JavaScript |          0 |          0 |          1 |          1 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/user/index.js            | JavaScript |         15 |          3 |          5 |         23 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/user/read.js             | JavaScript |          0 |          0 |          1 |          1 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/user/signin.js           | JavaScript |         53 |         30 |          7 |         90 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/user/update.js           | JavaScript |          0 |          0 |          1 |          1 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/user/verify.js           | JavaScript |         23 |         16 |          3 |         42 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/vaccine/create.js        | JavaScript |         68 |          0 |         11 |         79 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/vaccine/index.js         | JavaScript |         27 |          0 |          7 |         34 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/vaccine/read.js          | JavaScript |         41 |          0 |          4 |         45 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/vaccine/remove.js        | JavaScript |         60 |          2 |         14 |         76 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/vaccine/update.js        | JavaScript |         58 |          1 |         11 |         70 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/weight/create.js         | JavaScript |         62 |          0 |          9 |         71 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/weight/index.js          | JavaScript |         27 |          1 |          6 |         34 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/weight/read.js           | JavaScript |         41 |         10 |          4 |         55 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/weight/remove.js         | JavaScript |         59 |          1 |         13 |         73 |
+| /home/emad/Documents/projects/Artiman/backend/routes/v0/weight/update.js         | JavaScript |         58 |          1 |         11 |         70 |
+| Total                                                                            |            |      1,733 |        189 |        316 |      2,238 |
++----------------------------------------------------------------------------------+------------+------------+------------+------------+------------+

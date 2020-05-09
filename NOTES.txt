@@ -1,0 +1,13 @@
+// TODO:
+when pregnancy should be removed?
+  I think when an end time exists and some children are associated with the pregnancy,
+  removing may be dangerous  and will brake lots of connections that may raise lots of problems
+
+// TODO:
+  should I harrd delete or soft delete pregnancy vertecies and edges ?
+
+// TODO:
+  component doesnt update after entering new pregnancy
+
+// TODO:
+  out should ne undefiend if there is now out record

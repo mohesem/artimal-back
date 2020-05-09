@@ -1,4 +1,4 @@
-import { db, Users, Animals, Logs, Weights } from '../../../DB/db';
+import { db, Users, Logs, Vaccines } from '../../../DB/db';
 import jwt from 'jsonwebtoken';
 import keys from '../../../config/keys';
 
@@ -18,48 +18,30 @@ const findUser = decoded => {
   });
 };
 
-export default data => {
+export default (token, key) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const decoded = await jwt.verify(data.token, keys.jwtKey);
+      const decoded = await jwt.verify(token, keys.jwtKey);
       console.log(decoded);
       const user = await findUser(decoded);
 
       const trx = await db.beginTransaction({
-        write: ['logs', 'weights'],
+        write: ['animals', 'logs', 'vaccines'],
       });
 
-      const weight = await trx.run(() => Weights.document(data.entry.key));
-      console.log('weight is :: ', weight);
+      const vaccine = await trx.run(() => Vaccines.document(key));
+      await trx.run(() => Vaccines.update(vaccine, { deleted: true }));
 
       await trx.run(() =>
         Logs.save({
-          value: 'update',
-          type: 'weight',
-          entryId: weight._id,
+          value: 'delete',
+          type: 'vaccine',
+          entryId: vaccine._id,
           userId: user._id,
-          form: {
-            date: weight.date,
-            value: weight.value,
-          },
-          to: {
-            value:
-              typeof data.entry.value === 'number' ? data.entry.value : Number(data.entry.value),
-            date: data.entry.date,
-          },
           createdAt: Date.now(),
         })
       );
-      await trx.run(() =>
-        Weights.update(weight, {
-          value: typeof data.entry.value === 'number' ? data.entry.value : Number(data.entry.value),
-          date: data.entry.date,
-          updatedAt: data.entry.updatedAt,
-        })
-      );
-
       await trx.commit();
-
       resolve({ status: 200, result: successAction });
     } catch (error) {
       console.log(error);
