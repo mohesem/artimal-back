@@ -24,8 +24,15 @@ router.get('/stock/:limit/:animalKey/:sex/:type/:race', (req, res) => {
     .catch(response => res.status(response.status).send({ error: response.error }));
 });
 
-router.get('/stock/:limit/:animalKey', (req, res) => {
-  read(req.params.limit, req.params.animalKey)
+router.get('/stock/:limit/:animalKey/:sex?/:type?/:entryType?', (req, res) => {
+  console.log('sex is :::: ', req.params.sex);
+  read(
+    req.params.limit,
+    req.params.animalKey,
+    req.params.sex,
+    req.params.type,
+    req.params.entryType
+  )
     .then(response => res.status(response.status).send({ result: response.result }))
     .catch(response => res.status(response.status).send({ error: response.error }));
 });

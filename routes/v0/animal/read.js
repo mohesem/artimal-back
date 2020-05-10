@@ -19,16 +19,19 @@ async function search(query) {
   });
 }
 
-const createQuery = (key, sex, type, limit, race) => {
+const createQuery = (limit, key, sex, type, entryType) => {
   // TODO: add it later ==>  FILTER animal.exit != true
+
+  // ${race ? `FILTER animal.race == "${race}"` : ''}
+
+  console.log('___---___---_', typeof type, type);
 
   return new Promise((resolve, reject) => {
     const q = `FOR animal IN animalView
     SEARCH STARTS_WITH(animal._key, "${key}")
-    ${sex !== undefined ? `FILTER animal.sex == ${sex}` : ''}
-    ${race ? `FILTER animal.race == "${race}"` : ''}
-    ${type ? `FILTER animal.type == "${type}"` : ''}
-
+    ${sex !== '_' ? `FILTER animal.sex == ${sex}` : ''}
+    ${type !== '_' ? `FILTER animal.type == "${type}"` : ''}
+    ${entryType !== '_' ? `FILTER animal.entryType == "${entryType}"` : ''}
     ${limit ? `LIMIT ${limit}` : ''}
     RETURN animal`;
     console.log(q);
@@ -37,9 +40,9 @@ const createQuery = (key, sex, type, limit, race) => {
   });
 };
 
-export default (limit, key, sex, type, race) => {
+export default (limit, key, sex, type, entryType) => {
   return new Promise(async (resolve, reject) => {
-    const query = await createQuery(key, sex, type, limit, race);
+    const query = await createQuery(limit, key, sex, type, entryType);
     // console.log('........', query);
     try {
       const result = await search(query);

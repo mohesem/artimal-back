@@ -4,7 +4,7 @@ import { Router } from 'express';
 import user from './v0/user';
 import animal from './v0/animal';
 import logs from './v0/logs';
-// import key from './v0/key';
+// import user from './v0/user';
 import weight from './v0/weight';
 import expenses from './v0/expenses';
 import vaccine from './v0/vaccine';
@@ -20,7 +20,7 @@ router.use('/user', user);
 router.use('/animal', animal);
 router.use('/logs', logs);
 
-// router.use('/key', key);
+// router.use('/user', user);
 router.use('/weight', weight);
 router.use('/expenses', expenses);
 router.use('/vaccine', vaccine);
