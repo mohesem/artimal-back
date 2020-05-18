@@ -1,6 +1,5 @@
 import { db } from '../../../DB/db';
-
-// TODO: make it dynamic
+import objectFromString from '../../../Tools/objectFromString';
 
 async function search(query) {
   return new Promise((resolve, reject) => {
@@ -19,20 +18,21 @@ async function search(query) {
   });
 }
 
-const createQuery = (limit, key, sex, type, entryType) => {
+const createQuery = obj => {
   // TODO: add it later ==>  FILTER animal.exit != true
 
   // ${race ? `FILTER animal.race == "${race}"` : ''}
 
-  console.log('___---___---_', typeof type, type);
+  // console.log('___---___---_', typeof type, type);
 
   return new Promise((resolve, reject) => {
     const q = `FOR animal IN animalView
-    SEARCH STARTS_WITH(animal._key, "${key}")
-    ${sex !== '_' ? `FILTER animal.sex == ${sex}` : ''}
-    ${type !== '_' ? `FILTER animal.type == "${type}"` : ''}
-    ${entryType !== '_' ? `FILTER animal.entryType == "${entryType}"` : ''}
-    ${limit ? `LIMIT ${limit}` : ''}
+    SEARCH STARTS_WITH(animal._key, "${obj.key}")
+    ${obj.sex ? `FILTER animal.sex == ${obj.sex}` : ''}
+    ${obj.type ? `FILTER animal.type == "${obj.type}"` : ''}
+    ${obj.entryType ? `FILTER animal.entryType == "${obj.entryType}"` : ''}
+    ${obj.race ? `FILTER animal.race == "${obj.race}"` : ''}
+    ${obj.limit ? `LIMIT ${obj.limit}` : ''}
     RETURN animal`;
     console.log(q);
     resolve(q);
@@ -40,13 +40,14 @@ const createQuery = (limit, key, sex, type, entryType) => {
   });
 };
 
-export default (limit, key, sex, type, entryType) => {
+export default string => {
+  console.log(string);
+
   return new Promise(async (resolve, reject) => {
-    const query = await createQuery(limit, key, sex, type, entryType);
-    // console.log('........', query);
+    const obj = await objectFromString(string);
+    const query = await createQuery(obj);
     try {
       const result = await search(query);
-      console.log('..........', result);
       resolve({ status: 200, result });
     } catch (err) {
       console.log(err);

@@ -2,13 +2,13 @@ import { Animals, db } from '../../../DB/db';
 import { serverError } from '../../errors';
 
 async function search(key) {
-  console.log('::::::::::', key);
   return new Promise(async (resolve, reject) => {
     try {
       const pregnancies = await db.query(
         `
         FOR pregnancy, edge IN OUTBOUND 'animals/${key}' animalEdges
         FILTER edge.value == 'pregnancy'
+        FILTER pregnancy.deleted != true
         FOR animal IN INBOUND pregnancy._id animalEdges
         FILTER animal.sex == 0
         SORT DATE_TIMESTAMP(pregnancy.startedAt) DESC
@@ -16,7 +16,6 @@ async function search(key) {
         `
       );
 
-      console.log(pregnancies._result);
       resolve(pregnancies._result);
     } catch (error) {
       console.log(error);

@@ -87,6 +87,7 @@ export default data => {
         Logs.save({
           value: 'create',
           type: 'exit',
+          animalId: animal._id,
           entryId: exit._id,
           userId: user._id,
           createdAt: Date.now(),
@@ -103,6 +104,7 @@ export default data => {
           to: {
             exit: true,
           },
+          animalId: animal._id,
           entryId: exit._id,
           userId: user._id,
           createdAt: Date.now(),
@@ -113,6 +115,7 @@ export default data => {
         Logs.save({
           value: 'create',
           type: 'weight',
+          animalId: animal._id,
           entryId: weight._id,
           userId: user._id,
           createdAt: Date.now(),

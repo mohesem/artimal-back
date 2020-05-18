@@ -1,11 +1,4 @@
-import {
-  db,
-  userCollection,
-  animalCollection,
-  fromAnimalToPregnancy,
-  logCollection,
-  pregnancyCollection,
-} from '../../../DB/db';
+import { db, Users, Animals, AnimalEdges, Logs, Pregnancies, PregnancyEdges } from '../../../DB/db';
 import jwt from 'jsonwebtoken';
 import keys from '../../../config/keys';
 
@@ -15,7 +8,7 @@ import { animalNotFound, serverError, successAction, wrongToken, notAllowed } fr
 
 const findUser = decoded => {
   return new Promise(async (resolve, reject) => {
-    const user = await userCollection.document(decoded.key);
+    const user = await Users.document(decoded.key);
     if (user) {
       if (user.role !== 'admin') reject({ status: 401, error: notAllowed });
       resolve(user);
@@ -25,82 +18,111 @@ const findUser = decoded => {
   });
 };
 
-export default data => {
-  console.log(data);
-  return new Promise(async (resolve, reject) => {
-    try {
-      const decoded = await jwt.verify(data.token, keys.jwtKey);
-      console.log(decoded);
-      const user = await findUser(decoded);
-
-      const trx = await db.beginTransaction({
-        read: ['animals', 'fromAnimalToPregnancy'],
-        write: ['animals', 'logs', 'pregnancy', 'fromAnimalToPregnancy'],
-      });
-
-      const pregnancy = await trx.run(() => pregnancyCollection.document(data.entry.key));
-      const female = await trx.run(() => animalCollection.document(data.entry.femaleKey));
-
-      const inbounds = await db.query(
-        `
-        FOR v, e IN INBOUND 'pregnancy/${data.entry.key}' fromAnimalToPregnancy
-        RETURN e
-          `
-      );
-
-      console.log(inbounds._result);
-
-      inbounds._result.forEach(async r => {
-        await trx.run(() => fromAnimalToPregnancy.update(r, { deleted: true }));
-      });
-
-      await trx.run(() => pregnancyCollection.update(pregnancy, { deleted: true }));
-
-      if (!pregnancy.finishedAt) {
-        await trx.run(() => animalCollection.update(female, { pregnant: false }));
-      }
-
+const addError = async (trx, user, pregnancy, childResults) => {
+  console.log('iiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiin');
+  return new Promise(async resolve => {
+    await childResults.forEach(async (child, i) => {
+      const errors = child.errors
+        ? [...child.errors, 'hasNoPregnancyRecord']
+        : ['hasNoPregnancyRecord'];
+      await trx.run(() => Animals.update(child, { errors }));
       await trx.run(() =>
-        logCollection.save({
-          mode: 'remove',
-          type: 'pregnancy',
-          enetryKey: pregnancy._key,
-          userKey: user._key,
+        Logs.save({
+          value: 'error',
+          type: 'hasNoPregnancyRecord',
+          entryId: child._id,
+          userId: user._id,
+          createdAt: Date.now(),
+          previousPregnancyId: pregnancy._id,
         })
       );
 
-      // await trx.run(() =>
-      //   logCollection.save({
-      //     mode: 'create',
-      //     type: 'pregnancy',
-      //     enetryKey: pregnancy._id,
-      //     userKey: user._key,
-      //   })
-      // );
+      console.log(';;;;;;;;;;;;;;;;;,');
 
-      // const male = await animalCollection.document(data.entry.maleKey);
-      // const female = await animalCollection.document(data.entry.femaleKey);
+      if (i === childResults.length - 1) resolve();
+    });
+  });
+};
 
-      // await trx.run(() =>
-      //   female.update({
-      //     pregnant: true,
-      //   })
-      // );
+export default (token, key) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const decoded = await jwt.verify(token, keys.jwtKey);
+      const user = await findUser(decoded);
 
-      // await trx.run(() =>
-      //   fromAnimalToPregnancy.save({
-      //     _from: male._id,
-      //     _to: pregnancy._id,
-      //   })
-      // );
+      const trx = await db.beginTransaction({
+        read: ['animals', 'pregnancies', 'pregnancyEdges'],
+        write: ['animals', 'logs', 'pregnancies'],
+      });
 
-      // await trx.run(() =>
-      //   fromAnimalToPregnancy.save({
-      //     _from: female._id,
-      //     _to: pregnancy._id,
-      //   })
-      // );
+      const pregnancy = await trx.run(() => Pregnancies.document(key));
 
+      const childs = await trx.run(() =>
+        db.query(
+          `
+            FOR vertex , edge IN OUTBOUND '${pregnancy._id}' pregnancyEdges
+            FILTER vertex.deleted != true
+            RETURN vertex
+          `
+        )
+      );
+
+      const childResults = childs._result;
+
+      const parents = await trx.run(() =>
+        db.query(
+          `
+          FOR vertex , edge IN INBOUND '${pregnancy._id}' animalEdges
+          FILTER vertex.deleted != true
+          RETURN vertex
+          `
+        )
+      );
+
+      const parentsResult = parents._result;
+
+      const female = parentsResult.filter(e => e.sex === 1)[0];
+
+      /* if there was no child
+          if pregnancy was active update animal {pregnant = false} and delete pregnancy
+    */
+
+      if (pregnancy.active) {
+        await trx.run(() => Animals.update(female, { pregnant: false, updatedAt: Date.now() }));
+
+        await trx.run(() =>
+          Logs.save({
+            value: 'delete',
+            type: 'pregnancy',
+            entryId: pregnancy._id,
+            userId: user._id,
+            createdAt: Date.now(),
+            from: {
+              pregnant: true,
+            },
+            to: {
+              pregnant: false,
+            },
+          })
+        );
+      }
+
+      await trx.run(() => Pregnancies.update(pregnancy, { deleted: true, deletedAt: Date.now() }));
+
+      await trx.run(() =>
+        Logs.save({
+          value: 'delete',
+          type: 'pregnancy',
+          entryId: pregnancy._id,
+          userId: user._id,
+          createdAt: Date.now(),
+        })
+      );
+
+      // add error to childs
+      await addError(trx, user, pregnancy, childResults);
+
+      console.log('ooooooooooooooooooooooout');
       await trx.commit();
 
       resolve({ status: 200, result: successAction });

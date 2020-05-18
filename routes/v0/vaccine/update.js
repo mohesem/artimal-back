@@ -1,4 +1,4 @@
-import { db, Users, Logs, Vaccines } from '../../../DB/db';
+import { db, Users, Logs, Vaccines, Animals } from '../../../DB/db';
 import jwt from 'jsonwebtoken';
 import keys from '../../../config/keys';
 
@@ -26,8 +26,11 @@ export default data => {
       const user = await findUser(decoded);
 
       const trx = await db.beginTransaction({
+        read: ['animals'],
         write: ['logs', 'vaccines'],
       });
+
+      const animal = await trx.run(() => Animals.document(data.entry.key));
 
       const vaccine = await trx.run(() => Vaccines.document(data.entry.key));
 
@@ -35,6 +38,7 @@ export default data => {
         Logs.save({
           value: 'update',
           type: 'vaccine',
+          animalId: animal._id,
           entryId: vaccine._id,
           userId: user._id,
           form: {

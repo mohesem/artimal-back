@@ -1,15 +1,16 @@
 import { Router } from 'express';
-import byPagination from './byPagination';
+import pagination from './pagination';
 
 const router = Router();
 
 /* -------------------------------------------------------------------------- */
-/*                                  new apis                                  */
+/*                                     new                                    */
 /* -------------------------------------------------------------------------- */
-router.get('/pagination/:limit/:page/:collection?/:value?', (req, res) => {
-  byPagination(req.params.limit, req.params.page, req.params.collection, req.params.value)
+
+router.get('/pagination/:limit/:page', (req, res) => {
+  console.log('__--__-_--_-----_');
+  pagination(req.params.limit, req.params.page)
     .then(response => res.status(response.status).send({ result: response.result }))
     .catch(response => res.status(response.status).send({ error: response.error }));
 });
-
 export default router;

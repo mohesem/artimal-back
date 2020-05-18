@@ -1,32 +1,33 @@
 # Summary
 
-Date : 2020-05-02 23:09:20
+Date : 2020-05-18 17:00:04
 
 Directory /home/emad/Documents/projects/Artiman/backend/routes
 
-Total : 46 files,  1733 codes, 189 comments, 316 blanks, all 2238 lines
+Total : 62 files,  2849 codes, 272 comments, 485 blanks, all 3606 lines
 
 [details](details.md)
 
 ## Languages
 | language | files | code | comment | blank | total |
 | :--- | ---: | ---: | ---: | ---: | ---: |
-| JavaScript | 46 | 1,733 | 189 | 316 | 2,238 |
+| JavaScript | 62 | 2,849 | 272 | 485 | 3,606 |
 
 ## Directories
 | path | files | code | comment | blank | total |
 | :--- | ---: | ---: | ---: | ---: | ---: |
-| . | 46 | 1,733 | 189 | 316 | 2,238 |
-| v0 | 43 | 1,672 | 189 | 307 | 2,168 |
-| v0/animal | 7 | 313 | 74 | 47 | 434 |
-| v0/disease | 3 | 125 | 12 | 22 | 159 |
-| v0/expenses | 2 | 50 | 0 | 8 | 58 |
-| v0/key | 2 | 21 | 0 | 7 | 28 |
-| v0/milk | 2 | 64 | 0 | 13 | 77 |
-| v0/out | 4 | 254 | 0 | 48 | 302 |
-| v0/pregnancy | 6 | 253 | 38 | 53 | 344 |
-| v0/user | 7 | 91 | 49 | 19 | 159 |
-| v0/vaccine | 5 | 254 | 3 | 47 | 304 |
-| v0/weight | 5 | 247 | 13 | 43 | 303 |
+| . | 62 | 2,849 | 272 | 485 | 3,606 |
+| v0 | 59 | 2,786 | 272 | 475 | 3,533 |
+| v0/animal | 11 | 434 | 126 | 74 | 634 |
+| v0/disease | 8 | 537 | 55 | 95 | 687 |
+| v0/errors | 2 | 32 | 3 | 6 | 41 |
+| v0/exit | 5 | 452 | 37 | 58 | 547 |
+| v0/expenses | 2 | 46 | 0 | 10 | 56 |
+| v0/logs | 2 | 32 | 5 | 7 | 44 |
+| v0/milk | 5 | 238 | 6 | 40 | 284 |
+| v0/pregnancy | 7 | 369 | 21 | 71 | 461 |
+| v0/user | 7 | 169 | 7 | 30 | 206 |
+| v0/vaccine | 5 | 241 | 5 | 41 | 287 |
+| v0/weight | 5 | 236 | 7 | 43 | 286 |
 
 [details](details.md)

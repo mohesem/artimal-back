@@ -1,4 +1,4 @@
-import { db, Users, Logs, Diseases } from '../../../DB/db';
+import { db, Users, Logs, Diseases, Animals } from '../../../DB/db';
 import jwt from 'jsonwebtoken';
 import keys from '../../../config/keys';
 
@@ -31,12 +31,15 @@ export default data => {
       });
 
       const disease = await trx.run(() => Diseases.document(data.entry.key));
+      const animal = await trx.run(() => Animals.document(data.entry.animalKey));
+
       console.log('disease is :: ', disease);
 
       await trx.run(() =>
         Logs.save({
           value: 'update',
           type: 'disease',
+          animalId: animal._id,
           entryId: disease._id,
           userId: user._id,
           form: {

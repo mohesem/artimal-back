@@ -55,6 +55,7 @@ export default data => {
         Logs.save({
           value: 'create',
           type: 'disease',
+          animalId: animal._id,
           entryId: animal._id,
           userId: user._id,
           createdAt: Date.now(),

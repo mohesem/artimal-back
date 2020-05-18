@@ -230,8 +230,7 @@ async function createErrorsCollection(db) {
 // async function createAnimalRecodEdge(db) {
 //   const animalRecordsEdge = await db.edgeCollection('animalRecords');
 //   const result = await animalRecordsEdge.exists();
-//   console.log('.......', result);
-//   if (!result) {
+//   //   if (!result) {
 //     animalRecordsEdge.create().then(
 //       () => {
 //         log('animalRecord edgeCollection created');
@@ -248,7 +247,6 @@ async function createErrorsCollection(db) {
 async function createAnimalEdges(db) {
   const animalEdges = await db.edgeCollection('animalEdges');
   const result = await animalEdges.exists();
-  console.log('.......', result);
   if (!result) {
     animalEdges.create().then(
       () => {
@@ -266,7 +264,6 @@ async function createAnimalEdges(db) {
 async function createUserEdges(db) {
   const userEdges = await db.edgeCollection('userEdges');
   const result = await userEdges.exists();
-  console.log('.......', result);
   if (!result) {
     userEdges.create().then(
       () => {
@@ -284,7 +281,6 @@ async function createUserEdges(db) {
 async function createExitEdges(db) {
   const exitEdges = await db.edgeCollection('exitEdges');
   const result = await exitEdges.exists();
-  console.log('.......', result);
   if (!result) {
     exitEdges.create().then(
       () => {
@@ -302,7 +298,6 @@ async function createExitEdges(db) {
 async function createWeightEdges(db) {
   const weightEdges = await db.edgeCollection('weightEdges');
   const result = await weightEdges.exists();
-  console.log('.......', result);
   if (!result) {
     weightEdges.create().then(
       () => {
@@ -320,7 +315,6 @@ async function createWeightEdges(db) {
 async function createIncomeEdges(db) {
   const incomeEdges = await db.edgeCollection('incomeEdges');
   const result = await incomeEdges.exists();
-  console.log('.......', result);
   if (!result) {
     incomeEdges.create().then(
       () => {
@@ -338,7 +332,6 @@ async function createIncomeEdges(db) {
 async function createExpenseEdges(db) {
   const expenseEdges = await db.edgeCollection('expenseEdges');
   const result = await expenseEdges.exists();
-  console.log('.......', result);
   if (!result) {
     expenseEdges.create().then(
       () => {
@@ -356,7 +349,6 @@ async function createExpenseEdges(db) {
 async function createMilkEdges(db) {
   const milkEdges = await db.edgeCollection('milkEdges');
   const result = await milkEdges.exists();
-  console.log('.......', result);
   if (!result) {
     milkEdges.create().then(
       () => {
@@ -374,7 +366,6 @@ async function createMilkEdges(db) {
 async function createDiseaseEdges(db) {
   const diseaseEdges = await db.edgeCollection('diseaseEdges');
   const result = await diseaseEdges.exists();
-  console.log('.......', result);
   if (!result) {
     diseaseEdges.create().then(
       () => {
@@ -392,7 +383,6 @@ async function createDiseaseEdges(db) {
 async function createPregnancyEdges(db) {
   const pregnancyEdges = await db.edgeCollection('pregnancyEdges');
   const result = await pregnancyEdges.exists();
-  console.log('.......', result);
   if (!result) {
     pregnancyEdges.create().then(
       () => {
@@ -410,7 +400,6 @@ async function createPregnancyEdges(db) {
 async function createVaccineEdges(db) {
   const vaccineEdges = await db.edgeCollection('vaccineEdges');
   const result = await vaccineEdges.exists();
-  console.log('.......', result);
   if (!result) {
     vaccineEdges.create().then(
       () => {
@@ -428,7 +417,6 @@ async function createVaccineEdges(db) {
 async function createLogEdges(db) {
   const logEdge = await db.edgeCollection('logEdge');
   const result = await logEdge.exists();
-  console.log('.......', result);
   if (!result) {
     logEdge.create().then(
       () => {

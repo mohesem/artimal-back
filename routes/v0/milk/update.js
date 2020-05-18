@@ -1,10 +1,8 @@
-import { db, Users, Animals, Logs, Weights } from '../../../DB/db';
+import { db, Users, Logs, Milks, Animals } from '../../../DB/db';
 import jwt from 'jsonwebtoken';
 import keys from '../../../config/keys';
 
 import { animalNotFound, serverError, successAction, wrongToken, notAllowed } from '../../errors';
-
-// TODO: child edges from fromPregnancyToAnimals must be removed too
 
 const findUser = decoded => {
   return new Promise(async (resolve, reject) => {
@@ -27,25 +25,25 @@ export default data => {
 
       const trx = await db.beginTransaction({
         read: ['animals'],
-        write: ['logs', 'weights'],
+        write: ['logs', 'milks'],
       });
 
-      const animal = await trx.run(() => Animals.document(data.entry.key));
+      const animal = await trx.run(() => Animals.document(data.entry.animalKey));
 
-      const weight = await trx.run(() => Weights.document(data.entry.key));
-      console.log('weight is :: ', weight);
+      const milk = await trx.run(() => Milks.document(data.entry.key));
+      console.log('miiiilk is :: ', milk);
 
       await trx.run(() =>
         Logs.save({
           value: 'update',
-          type: 'weight',
+          type: 'milk',
           animalId: animal._id,
-          entryId: weight._id,
+          entryId: milk._id,
           userId: user._id,
           form: {
-            date: weight.date,
-            value: weight.value,
-            stopFeedingMilk: weight.stopFeedingMilk,
+            date: milk.date,
+            value: milk.value,
+            stopFeedingMilk: milk.stopFeedingMilk,
           },
           to: {
             value:
@@ -57,11 +55,10 @@ export default data => {
         })
       );
       await trx.run(() =>
-        Weights.update(weight, {
+        Milks.update(milk, {
           value: typeof data.entry.value === 'number' ? data.entry.value : Number(data.entry.value),
           date: data.entry.date,
-          updatedAt: data.entry.updatedAt,
-          stopFeedingMilk: data.entry.stopFeedingMilk,
+          updatedAt: Date.now(),
         })
       );
 

@@ -4,12 +4,12 @@ import { Router } from 'express';
 import user from './v0/user';
 import animal from './v0/animal';
 import logs from './v0/logs';
-// import user from './v0/user';
+import errors from './v0/errors';
 import weight from './v0/weight';
 import expenses from './v0/expenses';
 import vaccine from './v0/vaccine';
 import exit from './v0/exit';
-// import milk from './v0/milk';
+import milk from './v0/milk';
 import pregnancy from './v0/pregnancy';
 import disease from './v0/disease';
 
@@ -20,12 +20,12 @@ router.use('/user', user);
 router.use('/animal', animal);
 router.use('/logs', logs);
 
-// router.use('/user', user);
+router.use('/errors', errors);
 router.use('/weight', weight);
 router.use('/expenses', expenses);
 router.use('/vaccine', vaccine);
 router.use('/exit', exit);
-// router.use('/milk', milk);
+router.use('/milk', milk);
 router.use('/pregnancy', pregnancy);
 router.use('/disease', disease);
 

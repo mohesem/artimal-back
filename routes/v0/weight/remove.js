@@ -1,4 +1,4 @@
-import { db, Users, Animals, AnimalEdges, Logs, Weights } from '../../../DB/db';
+import { db, Users, Animals, Logs, Weights } from '../../../DB/db';
 import jwt from 'jsonwebtoken';
 import keys from '../../../config/keys';
 
@@ -18,7 +18,7 @@ const findUser = decoded => {
   });
 };
 
-export default (token, key) => {
+export default (token, key, animalKey) => {
   return new Promise(async (resolve, reject) => {
     try {
       const decoded = await jwt.verify(token, keys.jwtKey);
@@ -26,9 +26,11 @@ export default (token, key) => {
       const user = await findUser(decoded);
 
       const trx = await db.beginTransaction({
-        read: ['weights'],
+        read: ['weights', 'animals'],
         write: ['logs', 'weights'],
       });
+
+      const animal = await trx.run(() => Animals.document(key));
 
       const weight = await trx.run(() => Weights.document(key));
       await trx.run(() => Weights.update(weight, { deleted: true, deleteDate: Date.now() }));
@@ -37,6 +39,7 @@ export default (token, key) => {
         Logs.save({
           value: 'delete',
           type: 'weight',
+          animalId: animal._id,
           entryId: weight._id,
           userId: user._id,
           createdAt: Date.now(),

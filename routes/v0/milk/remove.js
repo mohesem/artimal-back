@@ -1,10 +1,8 @@
-import { db, Users, Logs, Vaccines, Animals } from '../../../DB/db';
+import { db, Users, Logs, Milks, Animals } from '../../../DB/db';
 import jwt from 'jsonwebtoken';
 import keys from '../../../config/keys';
 
-import { animalNotFound, serverError, successAction, wrongToken, notAllowed } from '../../errors';
-
-// TODO: child edges from fromPregnancyToAnimals must be removed too
+import { successAction, serverError, wrongToken, notAllowed } from '../../errors';
 
 const findUser = decoded => {
   return new Promise(async (resolve, reject) => {
@@ -26,27 +24,27 @@ export default (token, key, animalKey) => {
       const user = await findUser(decoded);
 
       const trx = await db.beginTransaction({
-        read: ['animals'],
-        write: ['logs', 'vaccines'],
+        read: ['milks', 'animals'],
+        write: ['logs', 'milks'],
       });
 
-      const animal = await trx.run(() => Animals.document(key));
-
-      const vaccine = await trx.run(() => Vaccines.document(key));
-      await trx.run(() => Vaccines.update(vaccine, { deleted: true }));
+      const animal = await trx.run(() => Animals.document(animalKey));
+      const milk = await trx.run(() => Milks.document(key));
+      await trx.run(() => Milks.update(milk, { deleted: true, deleteDate: Date.now() }));
 
       await trx.run(() =>
         Logs.save({
           value: 'delete',
-          type: 'vaccine',
-          animalId: animal.id,
-          entryId: vaccine._id,
+          type: 'milk',
+          animalId: animal._id,
+          entryId: milk._id,
           userId: user._id,
           createdAt: Date.now(),
         })
       );
-      await trx.commit();
-      resolve({ status: 200, result: successAction });
+
+      // await trx.commit();
+      // resolve({ status: 200, result: successAction });
     } catch (error) {
       console.log(error);
       if (error.status) reject(error);

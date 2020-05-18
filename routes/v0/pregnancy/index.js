@@ -4,6 +4,8 @@ import read from './read';
 import readDetails from './readDetails';
 import remove from './remove';
 
+import details from './details';
+
 const router = Router();
 
 router.post('/new', (req, res) => {
@@ -26,17 +28,27 @@ router.post('/readDetails', (req, res) => {
     .catch(response => res.status(response.status).send({ error: response.error }));
 });
 
-router.post('/remove', (req, res) => {
-  remove(req.body)
-    .then(response => res.status(response.status).send({ result: response.result }))
-    .catch(response => res.status(response.status).send({ error: response.error }));
-});
-
 router.get('/getActive/:animalKey', (req, res) => {
   console.log('??????????????????', req.params.animalKey);
   // remove(req.body)
   //   .then(response => res.status(response.status).send({ result: response.result }))
   //   .catch(response => res.status(response.status).send({ error: response.error }));
+});
+
+/* -------------------------------------------------------------------------- */
+/*                                     new                                    */
+/* -------------------------------------------------------------------------- */
+router.get('/details/:key', (req, res) => {
+  details(req.params.key)
+    .then(response => res.status(response.status).send({ result: response.result }))
+    .catch(response => res.status(response.status).send({ error: response.error }));
+});
+
+router.delete('/:token/:key', (req, res) => {
+  console.log('got the requset');
+  remove(req.params.token, req.params.key)
+    .then(response => res.status(response.status).send({ result: response.result }))
+    .catch(response => res.status(response.status).send({ error: response.error }));
 });
 
 export default router;

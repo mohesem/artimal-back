@@ -36,6 +36,7 @@ export default data => {
           value: typeof data.entry.value === 'number' ? data.entry.value : Number(data.entry.value),
           createdAt: Date.now(),
           date: data.entry.date,
+          stopFeedingMilk: data.entry.stopFeedingMilk,
         })
       );
 
@@ -51,6 +52,7 @@ export default data => {
         Logs.save({
           value: 'create',
           type: 'weight',
+          animalId: animal._id,
           entryId: weight._id,
           userId: user._id,
           createdAt: Date.now(),

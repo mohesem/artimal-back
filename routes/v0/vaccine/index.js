@@ -21,8 +21,8 @@ router.post('/', (req, res) => {
     .catch(response => res.status(response.status).send({ error: response.error }));
 });
 
-router.delete('/:token/:key', (req, res) => {
-  remove(req.params.token, req.params.key)
+router.delete('/:token/:key/:animalKey', (req, res) => {
+  remove(req.params.token, req.params.key, req.params.animalKey)
     .then(response => res.status(response.status).send({ result: response.result }))
     .catch(response => res.status(response.status).send({ error: response.error }));
 });

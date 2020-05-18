@@ -53,6 +53,8 @@ export default (token, key, animalKey, confirmToDeleteOut) => {
         ],
       });
 
+      const animal = await trx.run(() => Animals.document(animalKey));
+
       const exitToDisease = await db.query(
         `
         FOR v, e IN INBOUND 'diseases/${key}' exitEdges
@@ -90,7 +92,6 @@ export default (token, key, animalKey, confirmToDeleteOut) => {
               _* delete disease normaly
         */
 
-        const animal = await trx.run(() => Animals.document(animalKey));
         await trx.run(() => Animals.update(animal, { exit: false }));
 
         console.log({ animal });
@@ -117,6 +118,7 @@ export default (token, key, animalKey, confirmToDeleteOut) => {
             Logs.save({
               value: 'delete',
               type: 'diseaseSteps',
+              animalId: animal._id,
               entryId: step._id,
               userId: user._id,
               createdAt: Date.now(),
@@ -128,6 +130,7 @@ export default (token, key, animalKey, confirmToDeleteOut) => {
           Logs.save({
             value: 'delete',
             type: 'disease',
+            animalId: animal._id,
             entryId: disease._id,
             userId: user._id,
             createdAt: Date.now(),
@@ -154,6 +157,7 @@ export default (token, key, animalKey, confirmToDeleteOut) => {
             to: {
               exit: false,
             },
+            animalId: animal._id,
             entryId: animal._id,
             userId: user._id,
             createdAt: Date.now(),
@@ -164,6 +168,7 @@ export default (token, key, animalKey, confirmToDeleteOut) => {
           Logs.save({
             value: 'delete',
             type: 'exit',
+            animalId: animal._id,
             entryId: exit._id,
             userId: user._id,
             createdAt: Date.now(),
@@ -190,6 +195,7 @@ export default (token, key, animalKey, confirmToDeleteOut) => {
             Logs.save({
               value: 'delete',
               type: 'diseaseSteps',
+              animalId: animal._id,
               entryId: step._id,
               userId: user._id,
               createdAt: Date.now(),
@@ -201,6 +207,7 @@ export default (token, key, animalKey, confirmToDeleteOut) => {
           Logs.save({
             value: 'delete',
             type: 'disease',
+            animalId: animal._id,
             entryId: disease._id,
             userId: user._id,
             createdAt: Date.now(),

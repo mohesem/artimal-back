@@ -29,10 +29,10 @@ const createQuery = (from, to) => {
 export default (from, to) => {
   return new Promise(async (resolve, reject) => {
     const query = await createQuery(from, to);
-    console.log('........', query);
+
     try {
       const result = await search(query);
-      console.log('..........', result);
+
       resolve({ status: 200, result });
     } catch (err) {
       if (err.status) reject(err);

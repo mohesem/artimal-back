@@ -76,6 +76,20 @@ export default data => {
         Logs.save({
           value: 'create',
           type: 'pregnancy',
+          sex: 'male',
+          animalId: male._id,
+          entryId: pregnancy._id,
+          userId: user._id,
+          createdAt: Date.now(),
+        })
+      );
+
+      await trx.run(() =>
+        Logs.save({
+          value: 'create',
+          type: 'pregnancy',
+          sex: 'female',
+          animalId: female._id,
           entryId: pregnancy._id,
           userId: user._id,
           createdAt: Date.now(),

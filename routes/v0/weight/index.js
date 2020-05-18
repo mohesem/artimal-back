@@ -10,7 +10,6 @@ const router = Router();
 /*                                     new                                    */
 /* -------------------------------------------------------------------------- */
 router.get('/:animalKey', (req, res) => {
-  // console.log('...............................');
   read(req.params.animalKey)
     .then(response => res.status(response.status).send({ result: response.result }))
     .catch(response => res.status(response.status).send({ error: response.error }));
@@ -22,9 +21,9 @@ router.post('/new', (req, res) => {
     .catch(response => res.status(response.status).send({ error: response.error }));
 });
 
-router.delete('/:token/:key', (req, res) => {
+router.delete('/:token/:key/:animalKey', (req, res) => {
   console.log('reeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeemove');
-  remove(req.params.token, req.params.key)
+  remove(req.params.token, req.params.key, req.params.animalKey)
     .then(response => res.status(response.status).send({ result: response.result }))
     .catch(response => res.status(response.status).send({ error: response.error }));
 });
