@@ -679,6 +679,31 @@ async function createAnimalView(db) {
   }
 }
 
+async function createLogView(db) {
+  const logView = db.arangoSearchView('logView');
+
+  const result = await logView.exists();
+  if (!result) {
+    logView.create().then(
+      async () => {
+        log('logView created');
+        await logView.setProperties({
+          links: {
+            logs: {
+              includeAllFields: true,
+            },
+          },
+        });
+      },
+      err => {
+        throw new Error({ msg: 'Failed to create view', err });
+      }
+    );
+  } else {
+    log('animalView laready exists');
+  }
+}
+
 export default db => {
   return new Promise((resolve, reject) => {
     try {
@@ -709,6 +734,7 @@ export default db => {
         await createPregnancyEdges(db);
         //views
         await createAnimalView(db);
+        await createLogView(db);
         // resolve
         resolve(true);
       })();

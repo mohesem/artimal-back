@@ -1,22 +1,25 @@
 import { db } from '../../../DB/db';
+import objectFromString from '../../../Tools/objectFromString';
 
 // TODO: make it dynamic
 
-export default (limit, page, collection, value) => {
-  console.log('__+++++____----__-=++ ', { value });
+export default (limit, page, query) => {
   return new Promise(async (resolve, reject) => {
     try {
+      // console.log(`LIMIT ${Number(page) * Number(limit)}, ${Number(page) * Number(limit) + 20}`);
+      const obj = query ? await objectFromString(query) : {};
+
       db.query(
         `
-        FOR log IN logs
-      ${value !== 'null' ? `FILTER log.value == '${value}'` : ''}
-      ${collection !== 'null' ? `FILTER log.type == '${collection}'` : ''}
+        FOR log IN logView
+      ${obj.value ? `FILTER log.value == '${obj.value}'` : ''}
+      ${obj.collection ? `FILTER log.type == '${obj.collection}'` : ''}
+      ${obj.animalKey ? `SEARCH STARTS_WITH(log.animalId, "animals/${obj.animalKey}")` : ''}
         SORT DATE_TIMESTAMP(log.createdAt) DESC
-        LIMIT ${Number(page) * Number(limit)}, ${Number(page + 1) * Number(limit)}
+        LIMIT ${Number(page) * Number(limit)}, 20
         return log
         `
       ).then(docs => {
-        // console.log(docs._result);
         resolve({ status: 200, result: docs._result });
       });
     } catch (err) {

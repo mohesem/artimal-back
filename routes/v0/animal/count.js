@@ -4,11 +4,11 @@ async function search(query) {
   return new Promise((resolve, reject) => {
     db.query(
       `
-            FOR animal IN animals
-            FILTER animal.exit != true
-            COLLECT type = animal.type, race = animal.race WITH COUNT INTO countType
-            return {race, type, countType }
-          `
+      FOR animal IN animals
+      FILTER animal.exit != true
+      COLLECT type = animal.type, race = animal.race, sex = animal.sex WITH COUNT INTO countType
+      return {race, type, sex, countType }
+      `
     ).then(docs => {
       const result = docs._result;
       resolve(result);
