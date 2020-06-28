@@ -14,7 +14,7 @@ const port = process.env.PORT || 4000;
 
 const app = express();
 
-app.use(logget('tiny'));
+app.use(logger('tiny'));
 app.use(Cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
