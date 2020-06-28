@@ -9,7 +9,7 @@
     "start:prod": "ENV=prod babel-node .",
     "build": "webpack -p --define process.env.ENV='\"prod\"' --config ./webpack.config.js --mode production",
     "serve": "node bundle.js",
-    "git:push": "git add . && git commit -m 'last commit' && git push -u origin master"
+    "push": "git add . && git commit -m 'last commit' && git push -u origin master"
   },
   "keywords": [],
   "author": "",
@@ -24,6 +24,7 @@
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.10.0",
     "passport": "^0.4.0",
     "regenerator-runtime": "^0.13.5",
     "webpack": "^4.41.5"
